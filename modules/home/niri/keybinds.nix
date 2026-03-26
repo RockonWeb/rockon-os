@@ -10,6 +10,8 @@
 let
   # Full path to dms binary for use in niri
   dmsPath = "${config.home.homeDirectory}/.local/bin/dms";
+  projectRoot = "${config.home.homeDirectory}/rockon-os";
+  noctaliaSyncScript = "${projectRoot}/modules/home/noctalia-shell/sync-from-gui.py";
 
   # Determine launcher command based on barChoice
   launcherCommand =
@@ -234,6 +236,35 @@ in
       Mod+Ctrl+F { expand-column-to-available-width; }
       Mod+Ctrl+C { center-column; }
 
+
+      // === Multimedia Controls ===
+      XF86AudioRaiseVolume allow-when-locked=true {
+        spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "3%+";
+      }
+      XF86AudioLowerVolume allow-when-locked=true {
+        spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "3%-";
+      }
+      XF86AudioMute allow-when-locked=true {
+        spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle";
+      }
+      XF86AudioMicMute allow-when-locked=true {
+        spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle";
+      }
+    
+      XF86AudioPlay allow-when-locked=true {
+        spawn "playerctl" "play-pause";
+      }
+      XF86AudioPause allow-when-locked=true {
+        spawn "playerctl" "pause";
+      }
+      XF86AudioNext allow-when-locked=true {
+        spawn "playerctl" "next";
+      }
+      XF86AudioPrev allow-when-locked=true {
+       spawn "playerctl" "previous";
+      } 
+
+
       // === Manual Sizing ===
       Mod+Minus { set-column-width "-10%"; }
       Mod+Equal { set-column-width "+10%"; }
@@ -256,7 +287,7 @@ in
 
       // === Noctalia Config Sync ===
       Ctrl+Shift+S {
-          spawn "sh" "-c" "/home/don/black-don-os/modules/home/noctalia-shell/sync-from-gui.py && notify-send 'Noctalia Config' 'Settings synced to Nix template' -i preferences-system";
+          spawn "sh" "-c" "\"${noctaliaSyncScript}\" && notify-send 'Noctalia Config' 'Settings synced to Nix template' -i preferences-system";
       }
 
       // === System Controls ===

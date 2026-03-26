@@ -7,6 +7,9 @@
 
 set -e  # Exit on error
 
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
+EXPECTED_REPO_DIR="$HOME/rockon-os"
+
 # Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -57,6 +60,18 @@ if ! command -v git &> /dev/null || ! command -v lspci &> /dev/null; then
   echo -e "  ${GREEN}nix-shell -p git pciutils${NC}"
   exit 1
 fi
+
+# Verify repository location
+if [ "$SCRIPT_DIR" != "$EXPECTED_REPO_DIR" ]; then
+  print_error "This installer must be run from $EXPECTED_REPO_DIR"
+  print_info "Current repository path: $SCRIPT_DIR"
+  echo -e "${YELLOW}Several modules assume the repo lives at ~/rockon-os.${NC}"
+  echo -e "${YELLOW}Move or re-clone the repository, then rerun the installer.${NC}"
+  echo -e "  ${GREEN}cd ~ && git clone https://github.com/RockonWeb/rockon-os.git${NC}"
+  exit 1
+fi
+
+cd "$SCRIPT_DIR"
 print_success "All dependencies found"
 echo ""
 
@@ -456,7 +471,7 @@ read -p "Ready to build? [Y/n]: " build_confirm
 if [[ $build_confirm =~ ^[Nn]$ ]]; then
   echo ""
   print_info "You can build manually later with:"
-  echo -e "  ${GREEN}sudo nixos-rebuild switch --flake ~/black-don-os#$hostname${NC}"
+  echo -e "  ${GREEN}sudo nixos-rebuild switch --flake ~/rockon-os#$hostname${NC}"
   exit 0
 fi
 
@@ -469,10 +484,10 @@ if sudo nixos-rebuild switch --flake .#"$hostname"; then
   print_success "Black Don OS has been installed!"
   echo ""
   echo -e "${BLUE}What's next:${NC}"
-  echo -e "  1. Your configuration is in: ${GREEN}~/black-don-os/hosts/$hostname/${NC}"
+  echo -e "  1. Your configuration is in: ${GREEN}~/rockon-os/hosts/$hostname/${NC}"
   echo -e "  2. Both Hyprland and Niri are available - select at login screen"
-  echo -e "  3. Customize: ${GREEN}~/black-don-os/hosts/$hostname/variables.nix${NC}"
-  echo -e "  4. Rebuild: ${GREEN}sudo nixos-rebuild switch --flake ~/black-don-os#$hostname${NC}"
+  echo -e "  3. Customize: ${GREEN}~/rockon-os/hosts/$hostname/variables.nix${NC}"
+  echo -e "  4. Rebuild: ${GREEN}sudo nixos-rebuild switch --flake ~/rockon-os#$hostname${NC}"
   echo ""
   echo -e "${YELLOW}Tip: Update your monitor settings in variables.nix for optimal display${NC}"
   echo ""
@@ -497,7 +512,7 @@ else
   print_error "Build failed"
   echo ""
   echo -e "${YELLOW}To retry manually:${NC}"
-  echo -e "  ${GREEN}cd ~/black-don-os${NC}"
+  echo -e "  ${GREEN}cd ~/rockon-os${NC}"
   echo -e "  ${GREEN}sudo nixos-rebuild switch --flake .#$hostname${NC}"
   exit 1
 fi

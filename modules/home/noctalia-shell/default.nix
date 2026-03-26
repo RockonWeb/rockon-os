@@ -10,6 +10,8 @@ let
   variables = import ../../../hosts/${host}/variables.nix;
   barChoice = variables.barChoice or "waybar";
   enableNoctalia = barChoice == "noctalia";
+  projectRoot = "${config.home.homeDirectory}/rockon-os";
+  brandIconPath = "${projectRoot}/modules/home/fastfetch/blackdontrans.png";
 in
 {
   imports = lib.optionals enableNoctalia [
@@ -18,7 +20,7 @@ in
 
   config = lib.mkIf enableNoctalia {
     programs.waybar.enable = lib.mkForce false;
-    home.packages = [ inputs.noctalia.packages.${pkgs.system}.default ];
+    home.packages = [ inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default ];
 
     home.file.".config/noctalia/settings.json.template" = {
       text = builtins.toJSON {
@@ -110,7 +112,7 @@ in
                 id = "Volume";
               }
               {
-                customIconPath = "/home/don/black-don-os/modules/home/fastfetch/blackdontrans.png";
+                customIconPath = brandIconPath;
                 icon = "noctalia";
                 id = "ControlCenter";
                 useDistroLogo = false;
@@ -202,7 +204,7 @@ in
         general = {
           animationDisabled = false;
           animationSpeed = 1;
-          avatarImage = "/home/don/black-don-os/modules/home/fastfetch/blackdontrans.png";
+          avatarImage = brandIconPath;
           compactLockScreen = false;
           dimDesktop = true;
           forceBlackScreenCorners = false;
