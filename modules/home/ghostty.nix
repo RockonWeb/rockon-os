@@ -3,20 +3,42 @@
     enable = true;
     package = pkgs.ghostty;
   };
-  home.file."./.config/ghostty/config".text = ''
+  home.file."./.config/ghostty/config.ghostty".text = ''
 
     #theme = Aura
-    theme = Dracula
+    #theme = Dracula
     #theme = Aardvark Blue
     #theme = GruvboxDarkHard
+    # Custom cloud palette tuned for wallpapers/clouds.jpg
+    background = #242332
+    foreground = #e1dbe2
+    cursor-color = #f0c3a7
+    cursor-text = #242332
+    selection-background = #4a4b62
+    selection-foreground = #f8ebed
+    palette = 0=#242332
+    palette = 1=#cf97a8
+    palette = 2=#a5b3ab
+    palette = 3=#e8c1ad
+    palette = 4=#aab0cf
+    palette = 5=#bb9fc0
+    palette = 6=#c9b8c5
+    palette = 7=#dad4de
+    palette = 8=#5c5f77
+    palette = 9=#e3b1ba
+    palette = 10=#bccac0
+    palette = 11=#f0d1bc
+    palette = 12=#c3cae5
+    palette = 13=#d4b8d6
+    palette = 14=#decbd5
+    palette = 15=#f5eef2
     adjust-cell-height = 10%
     window-theme = dark
     window-height = 32
     window-width = 110
     background-opacity = 0.95
+    #background-opacity-cells = true
     background-blur-radius = 60
-    selection-background = #2d3f76
-    selection-foreground = #c8d3f5
     cursor-style = bar
     mouse-hide-while-typing = true
 

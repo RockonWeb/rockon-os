@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 ######################################
-# Black Don OS - Simplified Installer
+# Rockon OS - Simplified Installer
 # A NixOS configuration for everyone
 ######################################
 
@@ -38,9 +38,9 @@ print_info() {
 
 # Welcome
 clear
-print_header "Black Don OS - Simplified Installation"
+print_header "Rockon OS - Simplified Installation"
 echo ""
-echo -e "${BLUE}Welcome! This installer will set up Black Don OS with sensible defaults.${NC}"
+echo -e "${BLUE}Welcome! This installer will set up Rockon OS with sensible defaults.${NC}"
 echo -e "${BLUE}You can customize everything later by editing your variables.nix file.${NC}"
 echo ""
 sleep 2
@@ -463,7 +463,7 @@ fi
 echo ""
 
 # Build configuration
-print_header "Building Black Don OS"
+print_header "Building Rockon OS"
 echo -e "${YELLOW}This will take 10-20 minutes depending on your hardware...${NC}"
 echo ""
 
@@ -481,7 +481,7 @@ if sudo nixos-rebuild switch --flake .#"$hostname"; then
   echo ""
   print_header "Installation Successful!"
   echo ""
-  print_success "Black Don OS has been installed!"
+  print_success "Rockon OS has been installed!"
   echo ""
   echo -e "${BLUE}What's next:${NC}"
   echo -e "  1. Your configuration is in: ${GREEN}~/rockon-os/hosts/$hostname/${NC}"

@@ -1,23 +1,27 @@
-{pkgs, ...}: {
+{ pkgs, ... }: {
   xdg = {
     enable = true;
     mime.enable = true;
     mimeApps = {
       enable = true;
       defaultApplications = {
-        "text/html" = "zen-beta.desktop";
-        "x-scheme-handler/http" = "zen-beta.desktop";
-        "x-scheme-handler/https" = "zen-beta.desktop";
-        "x-scheme-handler/about" = "zen-beta.desktop";
-        "application/x-extension-htm" = "zen-beta.desktop";
-        "application/x-extension-html" = "zen-beta.desktop";
-        "application/x-extension-shtml" = "zen-beta.desktop";
-        "application/xhtml+xml" = "zen-beta.desktop";
-        "application/x-extension-xhtml" = "zen-beta.desktop";
-        "application/x-extension-xht" = "zen-beta.desktop";
+        "text/html" = "com.google.Chrome.desktop";
+        "x-scheme-handler/http" = "com.google.Chrome.desktop";
+        "x-scheme-handler/https" = "com.google.Chrome.desktop";
+        "x-scheme-handler/about" = "com.google.Chrome.desktop";
+        "application/x-extension-htm" = "com.google.Chrome.desktop";
+        "application/x-extension-html" = "com.google.Chrome.desktop";
+        "application/x-extension-shtml" = "com.google.Chrome.desktop";
+        "application/xhtml+xml" = "com.google.Chrome.desktop";
+        "application/x-extension-xhtml" = "com.google.Chrome.desktop";
+        "application/x-extension-xht" = "com.google.Chrome.desktop";
       };
     };
-    # Portal configuration moved to system-level (modules/core/flatpak.nix)
-    # to avoid package collisions between stable and unstable
   };
+
+  # удалить этот override целиком
+  # home.file.".local/share/applications/com.google.Chrome.desktop".text = ''
+  #   [Desktop Entry]
+  #   Hidden=true
+  # '';
 }

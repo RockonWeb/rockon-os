@@ -167,7 +167,7 @@ dcli deploy nix-desktop
 
 dcli automatically detects:
 - **Current Host**: From the system hostname
-- **Project Directory**: `~/black-don-os`
+- **Project Directory**: `~/rockon-os`
 - **Available Hosts**: From the `hosts/` directory
 - **Current Profile**: From your flake configuration
 

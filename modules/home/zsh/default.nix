@@ -1,4 +1,5 @@
 {
+  config,
   profile,
   pkgs,
   lib,
@@ -17,6 +18,7 @@ in
   programs.zsh = {
     enable = true;
     autosuggestion.enable = true;
+    dotDir = config.home.homeDirectory;
     syntaxHighlighting = {
       enable = true;
       highlighters = [
@@ -29,7 +31,7 @@ in
       ];
     };
     historySubstringSearch.enable = true;
-
+	
     history = {
       ignoreDups = true;
       save = 10000;

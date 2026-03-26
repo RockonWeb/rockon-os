@@ -53,7 +53,7 @@ in
     # Install DankMaterialShell and recommended dependencies
     home.packages = with pkgs; [
       # Quickshell - the shell that runs DMS
-      inputs.quickshell.packages.${pkgs.system}.default
+      inputs.quickshell.packages.${pkgs.stdenv.hostPlatform.system}.default
 
       # DMS installer script
       (writeShellScriptBin "dms-install" ''

@@ -18,10 +18,10 @@ let
       owner = "Nomadcxx";
       repo = "sysc-greet";
       rev = "master";
-      sha256 = "sha256-SEAtVGxn2ZrNbHA+eS79sJCMytlhCFtVJ0l6/pj+b4w=";
+      sha256 = "sha256-4/dHm61GlNuwwacE5KG0gBkvMAQmTjH18w9AAv7nFn4=";
     };
 
-    vendorHash = "sha256-n/WQaEWYPlVZs1xNOER1tx5I6FwoU0IahZFZZGD4saA=";
+    vendorHash = "sha256-dNkp1/ms1dO6sWNK9qYVq9VGWuFbyMlqdAn+D8vpZ8w=";
 
     buildPhase = ''
       go build -o sysc-greet ./cmd/sysc-greet

@@ -5,7 +5,7 @@
     settings = {
       display = {
         color = {
-          keys = "35";
+          keys = "33";
           output = "95";
         };
         separator = " ➜  ";
@@ -26,7 +26,7 @@
         "break"
         {
           type = "os";
-          key = "OS - BlackDon's OS";
+          key = "OS - Rockon OS";
           keyColor = "31";
         }
         {
@@ -48,32 +48,32 @@
         {
           type = "wm";
           key = "WM   ";
-          keyColor = "32";
+          keyColor = "33";
         }
         {
           type = "wmtheme";
           key = " ├ 󰉼 ";
-          keyColor = "32";
+          keyColor = "33";
         }
         {
           type = "icons";
           key = " ├ 󰀻 ";
-          keyColor = "32";
+          keyColor = "33";
         }
         {
           type = "cursor";
           key = " ├  ";
-          keyColor = "32";
+          keyColor = "33";
         }
         {
           type = "terminal";
           key = " ├  ";
-          keyColor = "32";
+          keyColor = "33";
         }
         {
           type = "terminalfont";
           key = " └  ";
-          keyColor = "32";
+          keyColor = "33";
         }
         "break"
         {

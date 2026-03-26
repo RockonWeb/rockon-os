@@ -13,15 +13,15 @@
           "gtk"
         ];
       };
-      hyprland = {
-        default = [
-          "hyprland"
-          "gtk"
-        ];
-        "org.freedesktop.impl.portal.FileChooser" = "gtk";
-        "org.freedesktop.impl.portal.ScreenCast" = "hyprland";
-        "org.freedesktop.impl.portal.Screenshot" = "hyprland";
-      };
+ #      hyprland = {
+ #        default = [
+ #          "hyprland"
+ #          "gtk"
+ #        ];
+ #        "org.freedesktop.impl.portal.FileChooser" = "gtk";
+ #        "org.freedesktop.impl.portal.ScreenCast" = "hyprland";
+ #        "org.freedesktop.impl.portal.Screenshot" = "hyprland";
+ #      };
       niri = {
         default = [
           "gnome"
@@ -33,7 +33,7 @@
       };
     };
     configPackages = [
-      pkgs.hyprland
+      # pkgs.hyprland
       pkgs.niri
     ];
   };

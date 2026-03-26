@@ -42,9 +42,8 @@ in
   };
   users.mutableUsers = true;
   users.users.${username} = {
-    isNormalUser = username != "root";
-    isSystemUser = username == "root";
-    description = if username == "root" then "System administrator" else gitUsername;
+    isNormalUser = true;
+    description = "${gitUsername}";
     extraGroups = [
       "adbusers"
       "docker"

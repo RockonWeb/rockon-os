@@ -13,8 +13,11 @@
   input {
       keyboard {
           xkb {
+               layout "us,ru"
+               options "grp:ctrl_shift_toggle"
           }
           numlock
+          track-layout "global"
       }
       touchpad {
           // Natural scrolling inverts scroll direction
@@ -22,8 +25,8 @@
           natural-scroll
       }
       mouse {
-          accel-profile "adaptive"
-          accel-speed 1.0
+          accel-profile "flat"
+          accel-speed 0.3
       }
       trackpoint {
       }
@@ -47,8 +50,8 @@
       default-column-width { proportion 0.5; }
 
       border {
-          width 2
-          active-color "#cba6f7"
+          width 1
+          active-color "#3300a3"
           inactive-color "#45475a"
           urgent-color "#f5c2e7"
       }

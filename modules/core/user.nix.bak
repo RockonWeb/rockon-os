@@ -35,16 +35,15 @@ in
       imports = [ ./../home ];
       home = {
         username = "${username}";
-        homeDirectory = if username == "root" then "/root" else "/home/${username}";
+        homeDirectory = "/home/${username}";
         stateVersion = "23.11";
       };
     };
   };
   users.mutableUsers = true;
   users.users.${username} = {
-    isNormalUser = username != "root";
-    isSystemUser = username == "root";
-    description = if username == "root" then "System administrator" else gitUsername;
+    isNormalUser = true;
+    description = "${gitUsername}";
     extraGroups = [
       "adbusers"
       "docker"

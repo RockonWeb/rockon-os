@@ -43,7 +43,7 @@ git push origin BRANCH-NAME
 
 ## Repository Information
 
-**GitLab Repository**: https://gitlab.com/theblackdon/black-don-os
+**GitLab Repository**: https://gitlab.com/theblackdon/rockon-os
 
 ### Branch Strategy
 - **main**: Public-facing simplified configuration for distribution

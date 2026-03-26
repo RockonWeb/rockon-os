@@ -17,14 +17,14 @@
             SDL2
 
             # Additional libraries for better compatibility
-            xorg.libXcursor
-            xorg.libXi
-            xorg.libXinerama
-            xorg.libXScrnSaver
-            xorg.libXcomposite
-            xorg.libXdamage
-            xorg.libXrender
-            xorg.libXext
+            libXcursor
+            libXi
+            libXinerama
+            libXScrnSaver
+            libXcomposite
+            libXdamage
+            libXrender
+            libXext
 
             # Fix for Xwayland symbol errors
             libkrb5

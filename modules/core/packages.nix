@@ -16,14 +16,13 @@
     seahorse.enable = true;
     # Hyprland always enabled - both WMs available at login
     hyprland = {
-      enable = true; # Create desktop file and dependencies
+      enable = false; # Create desktop file and dependencies
       package = pkgs.hyprland;
       portalPackage = pkgs.xdg-desktop-portal-hyprland;
     };
-    hyprlock.enable = true; # Resolve pam issue, can be disabled per-host via enableHyprlock
+    hyprlock.enable = false; # Resolve pam issue, can be disabled per-host via enableHyprlock
     fuse.userAllowOther = true;
     mtr.enable = true;
-    adb.enable = true;
     gnupg.agent = {
       enable = true;
       enableSSHSupport = true;
@@ -41,8 +40,25 @@
     ];
 
   environment.systemPackages = with pkgs; [
-    amfora # Fancy Terminal Browser For Gemini Protocol
-    appimage-run # Needed For AppImage Support
+    # amfora # Fancy Terminal Browser For Gemini Protocol
+    antigravity
+    fzf
+    libreoffice-fresh
+    hunspell
+    hunspellDicts.ru_RU  # Для русского языка
+    hunspellDicts.en_US  # Для английского языка
+    openrgb
+    onlyoffice-desktopeditors
+    git
+    yandex-music
+    #firefox
+    lxqt.lxqt-policykit
+    xray
+    v2raya
+    appimage-run
+    telegram-desktop
+    google-chrome
+    android-tools # Needed For AppImage Support
     bottom # btop like util
     brightnessctl # For Screen Brightness Control
     cmatrix # Matrix Movie Effect In Terminal
@@ -56,7 +72,7 @@
     gdu # graphical disk usage
     gedit # Simple Graphical Text Editor
     gimp # Great Photo Editor
-    glxinfo # Needed for inxi -G GPU info
+    mesa-demos # Needed for inxi -G GPU info
     gping # graphical ping
     tuigreet # The Login Manager (Sometimes Referred To As Display Manager)
     htop # Simple Terminal Based System Monitor
@@ -74,7 +90,7 @@
     ncdu # Disk Usage Analyzer With Ncurses Interface
     nitch # small fetch util
     # Nix Language Packages
-    nixfmt-rfc-style # Nix Formatter
+    nixfmt # Nix Formatter
     nixd # Nix Language Server
     nil # Nix Language Server
     onefetch # shows current build info and stats
@@ -99,10 +115,10 @@
     nwg-drawer # drawer GUI
     nwg-look # Look GUI
     rofi-emoji # rofi-emoji-wayland merged into rofi-emoji in nixpkgs-unstable
-    youtube-music
-    zen-browser # Default browser
+    # youtube-music
+    # zen-browser # Default browser
     # Development Tools
-    zed-editor # Code editor with AI features
+    # zed-editor # Code editor with AI features
     popsicle
     # AI code editors (cursor, claude-code, gemini-cli) moved to modules/core/ai-code-editors.nix
     gum
