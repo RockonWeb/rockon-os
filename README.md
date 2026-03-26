@@ -1,4 +1,4 @@
-# rockon-os
+# Rockon OS
 
 Personal NixOS flake for my machines and workflow.
 
