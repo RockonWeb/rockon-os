@@ -13,8 +13,15 @@
     keyboard.qmk.enable = false;
     bluetooth.enable = true;
     bluetooth.powerOnBoot = true;
-  };
 
+    i2c.enable = true;
+ };
+
+  boot.kernelModules = [ "i2c-dev" ];
+
+  services.hardware.openrgb = {
+    enable = true;
+  };
 
 
   # Udev rules for Corsair devices

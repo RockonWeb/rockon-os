@@ -35,11 +35,11 @@ in
     ./fastfetch
     ./fzf.nix
     ./gh.nix
-    ./ghostty.nix
     ./git.nix
     ./gtk.nix
     ./htop.nix
     ./kitty.nix
+    ./ghostty.nix
     ./lazygit.nix
     ./nvf.nix
     ./nwg-drawer.nix
@@ -64,29 +64,29 @@ in
   # Window Managers - Both always available, user selects at login
   ++ [
     ./niri
-    ./hyprland
+   # ./hyprland
   ]
 
   # Shell - conditional import based on defaultShell variable
-  ++ lib.optionals (defaultShell == "fish") [
-    ./fish
-    ./fish/fishrc-personal.nix
-  ]
+ # ++ lib.optionals (defaultShell == "fish") [
+  #  ./fish
+  #  ./fish/fishrc-personal.nix
+ # ]
   ++ lib.optionals (defaultShell == "zsh") [
     ./zsh
   ]
 
   # Bar - conditional import based on barChoice variable
-  ++ lib.optionals (actualBarChoice == "dms") [
-    ./dank-material-shell
-  ]
+#  ++ lib.optionals (actualBarChoice == "dms") [
+ #   ./dank-material-shell
+ # ]
   ++ lib.optionals (actualBarChoice == "noctalia") [
     ./noctalia-shell
-  ]
-  ++ lib.optionals (actualBarChoice == "waybar") [
-    waybarChoice
-    ./swaync.nix # Only use swaync with waybar
   ];
+ # ++ lib.optionals (actualBarChoice == "waybar") [
+  #  waybarChoice
+  #  ./swaync.nix # Only use swaync with waybar
+ # ];
 
   # Allows usage in other modules for overriding settings
   _module.args = {

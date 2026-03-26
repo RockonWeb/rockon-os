@@ -191,7 +191,7 @@
         nix = {
           enable = true;
           lsp = {
-            server = "nil";
+            servers = [ "nil" ];
           };
         };
         clang = {
@@ -211,7 +211,7 @@
           lsp = {
             enable = true;
           };
-          format.type = "prettierd";
+          format.type = [ "prettierd" ];
           extensions.ts-error-translator = {
             enable = true;
           };
@@ -224,15 +224,15 @@
         };
         css = {
           enable = true;
-          format.type = "prettierd";
+          format.type = [ "prettierd" ];
         };
         typst = {
           enable = true;
         };
         rust = {
           enable = true;
-          crates = {
-            enable = true;
+          extensions.crates-nvim = {
+             enable = true;
           };
         };
       };

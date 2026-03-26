@@ -17,7 +17,7 @@
       ];
       image = [
         {
-          path = "/home/${username}/black-don-os/img/UpdatedTheBlackDon.png";
+          path = "/home/${username}/rockon-os/img/UpdatedTheBlackDon.png";
           size = 150;
           border_size = 4;
           border_color = "rgb(0C96F9)";

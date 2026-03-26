@@ -9,6 +9,7 @@
     tumbler.enable = true; # Image/video preview
     gnome.gnome-keyring.enable = true;
     upower.enable = true; # Power management (required for DMS battery monitoring)
+    udisks2.enable = true;
 
     smartd = {
       enable =

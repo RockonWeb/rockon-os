@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 ######################################
-# Steam Deck Host Setup Script for Black Don OS
+# Steam Deck Host Setup Script for Rockon OS
 # Author: Black Don
 # Creates a Steam Deck optimized configuration with auto-login to gamescope session
 #######################################
@@ -30,12 +30,12 @@ print_warning() {
   echo -e "${YELLOW}Warning: ${1}${NC}"
 }
 
-print_header "Black Don OS - Steam Deck Host Setup"
+print_header "Rockon OS - Steam Deck Host Setup"
 
 # Check if we're in the correct directory
 if [[ ! -f "flake.nix" ]] || [[ ! -d "hosts" ]]; then
-  print_error "This script must be run from the Black Don OS root directory"
-  echo "Please cd to your zaneyos directory and run this script again"
+  print_error "This script must be run from the Rockon OS root directory"
+  echo "Please cd to your rockon-os directory and run this script again"
   exit 1
 fi
 
@@ -434,17 +434,17 @@ cat > "INSTALL-$newHostName.md" << EOF
 - Power on Steam Deck while holding Volume Down
 - Select boot device from boot menu
 
-### 2. Clone Black Don OS configuration
+### 2. Clone Rockon OS configuration
 \`\`\`bash
 # Clone the repository
-git clone https://gitlab.com/theblackdon/black-don-os.git
-cd black-don-os
+git clone https://gitlab.com/theblackdon/rockon-os.git
+cd rockon-os
 \`\`\`
 
 ### 3. Run the installation script
 \`\`\`bash
 # Make sure your hostname matches: $newHostName
-./install-black-don-os.sh
+./install-rockon-os.sh
 \`\`\`
 
 ### 4. Post-installation configuration
@@ -483,7 +483,7 @@ dcli rebuild
 
 ## Building from Another Computer
 
-To deploy this configuration from your existing Black Don OS computer:
+To deploy this configuration from your existing Rockon OS computer:
 \`\`\`bash
 dcli deploy $newHostName
 \`\`\`

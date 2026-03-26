@@ -12,7 +12,7 @@ in
     set -euo pipefail
 
     # --- Configuration ---
-    PROJECT="black-don-os"
+    PROJECT="rockon-os"
     HOST="${host}"
     PROFILE="${profile}"
     BACKUP_FILES_STR="${backupFilesString}"
@@ -23,7 +23,7 @@ in
 
     # --- Helper Functions ---
     print_help() {
-      echo "Black Don OS CLI Utility -- version $VERSION"
+      echo "Rockon OS CLI Utility -- version $VERSION"
       echo ""
       echo "Usage: dcli [command]"
       echo ""
@@ -177,7 +177,7 @@ in
       diag)
         echo "Generating system diagnostic report..."
         {
-          echo "=== Black Don OS System Diagnostic Report ==="
+          echo "=== Rockon OS System Diagnostic Report ==="
           echo "Generated: $(date)"
           echo "Host: $HOST"
           echo "Profile: $PROFILE"
