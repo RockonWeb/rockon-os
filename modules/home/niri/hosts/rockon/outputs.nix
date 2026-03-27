@@ -4,8 +4,8 @@
   // Configure your monitors here
 
   output "DP-2" {
-    mode "2560x1440@143.999"
-    scale 1.25
+    mode "2560x1440@165.001"
+    scale 1.0
     position x=0 y=0
   }
 

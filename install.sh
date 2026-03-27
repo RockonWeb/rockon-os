@@ -120,11 +120,12 @@ echo -e "  Europe/London"
 echo -e "  Europe/Paris"
 echo -e "  Asia/Tokyo"
 echo -e "  Australia/Sydney"
+echo -e "  Asia/Irkutsk"
 echo ""
 echo -e "${YELLOW}Tip: Find your timezone at: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones${NC}"
 echo ""
-read -p "Enter timezone [America/New_York]: " timezone
-timezone=${timezone:-America/New_York}
+read -p "Enter timezone [Asia/Irkutsk]: " timezone
+timezone=${timezone:-Asia/Irkutsk}
 print_success "Timezone: $timezone"
 echo ""
 
@@ -256,8 +257,8 @@ cat > "hosts/$hostname/variables.nix" << EOF
   clock24h = false;
 
   # Default Applications
-  browser = "zen";
-  terminal = "kitty";
+  browser = "google-chrome";
+  terminal = "ghostty";
   keyboardLayout = "$keyboard";
   consoleKeyMap = "$keyboard";
 
@@ -293,7 +294,7 @@ cat > "hosts/$hostname/variables.nix" << EOF
   defaultShell = "zsh";   # Options: "fish" or "zsh"
 
   # Theming
-  stylixImage = ../../wallpapers/Valley.jpg;
+  stylixImage = ../../wallpapers/clouds.jpg;
   #waybarChoice = ../../modules/home/waybar/waybar-ddubs.nix;  # Waybar temporarily disabled
   animChoice = ../../modules/home/hyprland/animations-end4.nix;
 
