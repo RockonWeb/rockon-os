@@ -14,7 +14,7 @@
       keyboard {
           xkb {
                layout "us,ru"
-               options "grp:ctrl_shift_toggle"
+               options "grp:alt_shift_toggle"
           }
           numlock
           track-layout "global"

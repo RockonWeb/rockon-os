@@ -13,6 +13,7 @@
     hunspellDicts.en_US
     hunspellDicts.en_AU
     hunspellDicts.es_ES
+    hunspellDicts.ru_RU
     # LSP servers
     clang-tools # C/C++ LSP
     nil # Nix LSP

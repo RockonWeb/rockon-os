@@ -44,9 +44,6 @@
     antigravity
     fzf
     libreoffice-fresh
-    hunspell
-    hunspellDicts.ru_RU  # Для русского языка
-    hunspellDicts.en_US  # Для английского языка
     openrgb
     onlyoffice-desktopeditors
     git

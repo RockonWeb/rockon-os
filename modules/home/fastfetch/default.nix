@@ -15,7 +15,7 @@
         source = ./blackdontrans.png;
         type = "kitty-direct";
         height = 10;
-        width = 20;
+        width = 24;
         padding = {
           top = 2;
           left = 2;
