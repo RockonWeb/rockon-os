@@ -9,7 +9,7 @@ Previous READMEs are preserved:
 - [README-ORIGINAL-BLACK-DON-OS.md](README-ORIGINAL-BLACK-DON-OS.md)
 - [README-ORIGINAL-ZANEYOS.md](README-ORIGINAL-ZANEYOS.md)
 
-![rockon-os desktop](img/desktop-screenshot.png)
+![rockon-os desktop](/image.png)
 
 ## What This Repo Is
 
