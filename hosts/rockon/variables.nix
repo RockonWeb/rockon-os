@@ -58,4 +58,8 @@
 
   # Startup Applications
   startupApps = [ ];
+  startupCommands = [
+    "sleep 1; env -u http_proxy -u https_proxy -u all_proxy -u HTTP_PROXY -u HTTPS_PROXY -u ALL_PROXY yandex-music --no-sandbox --no-proxy-server >/dev/null 2>&1 & Telegram >/dev/null 2>&1 &"
+    "sleep 3; antigravity >/dev/null 2>&1 & google-chrome >/dev/null 2>&1 &"
+  ];
 }

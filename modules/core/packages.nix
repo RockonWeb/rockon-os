@@ -43,12 +43,13 @@
     # amfora # Fancy Terminal Browser For Gemini Protocol
     antigravity
     fzf
+    vesktop
     libreoffice-fresh
     openrgb
     onlyoffice-desktopeditors
     git
     yandex-music
-    #firefox
+    firefox
     lxqt.lxqt-policykit
     xray
     v2raya

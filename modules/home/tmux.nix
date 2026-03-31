@@ -10,6 +10,7 @@
 
     extraConfig = ''
               set-option -g status-position top
+              set -g @rockon_project_root "$HOME/rockon-os"
 
               #set -g default-terminal "screen-256color"
               set-option -g history-limit 5000
@@ -87,7 +88,7 @@
       bind C-z display-popup \
         -w 90% \
         -h 90% \
-        -E 'nvim ~/ddubsos/flake.nix'
+        -E "nvim #{@rockon_project_root}/flake.nix"
       #bind C-g display-popup -E "bash -i ~/.tmux/scripts/chat-popup.sh"
       bind C-t display-popup \
         -d "#{pane_current_path}" \
@@ -98,11 +99,11 @@
       ##### Display Menu #####
 
       bind d display-menu -T "#[align=centre]Dotfiles" -x C -y C \
-        "ZaneyOS flake.nix"        f  "display-popup -E 'nvim ~/zaneyos/flake.nix'" \
-        "ZaneyOS packages"         p  "display-popup -E 'nvim ~/zaneyos/modules/core/packages.nix'" \
-        "ZaneyOS keybinds"         k  "display-popup -E 'nvim ~/zaneyos/modules/home/hyprland/binds.nix'" \
-        "ZaneyOS env variables"    e  "display-popup -E 'nvim ~/zaneyos/modules/home/hyprland/env.nix'" \
-        "ZaneyOS windowrules"      w  "display-popup -E 'nvim ~/zaneyos/modules/home/hyprland/windowrules.nix'" \
+        "Rockon flake.nix"         f  "display-popup -E 'nvim #{@rockon_project_root}/flake.nix'" \
+        "Rockon packages"          p  "display-popup -E 'nvim #{@rockon_project_root}/modules/core/packages.nix'" \
+        "Rockon keybinds"          k  "display-popup -E 'nvim #{@rockon_project_root}/modules/home/niri/keybinds.nix'" \
+        "Rockon variables"         e  "display-popup -E 'nvim #{@rockon_project_root}/hosts/rockon/variables.nix'" \
+        "Rockon windowrules"       w  "display-popup -E 'nvim #{@rockon_project_root}/modules/home/niri/windowrules.nix'" \
         "Exit"              q  ""
 
 

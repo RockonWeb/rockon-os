@@ -1,15 +1,7 @@
 {
   config,
-  profile,
-  pkgs,
-  lib,
-  host,
   ...
 }:
-let
-  variables = import ../../../hosts/${host}/variables.nix;
-  defaultShell = variables.defaultShell or "zsh";
-in
 {
   imports = [
     ./zshrc-personal.nix
@@ -17,6 +9,7 @@ in
 
   programs.zsh = {
     enable = true;
+    enableCompletion = true;
     autosuggestion.enable = true;
     dotDir = config.home.homeDirectory;
     syntaxHighlighting = {
@@ -31,7 +24,7 @@ in
       ];
     };
     historySubstringSearch.enable = true;
-	
+
     history = {
       ignoreDups = true;
       save = 10000;
@@ -40,39 +33,69 @@ in
 
     oh-my-zsh = {
       enable = true;
+      plugins = [
+        "git"
+        "sudo"
+        "extract"
+        "colored-man-pages"
+        "command-not-found"
+      ];
     };
 
-    plugins = [
-      {
-        name = "powerlevel10k";
-        src = pkgs.zsh-powerlevel10k;
-        file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
-      }
-      {
-        name = "powerlevel10k-config";
-        src = lib.cleanSource ./p10k-config;
-        file = "p10k.zsh";
-      }
-    ];
-
     initContent = ''
-      # Auto-launch Fish if configured as default shell
-      ${
-        if defaultShell == "fish" then
-          ''
-            if [[ $(ps --no-header --pid=$PPID --format=comm) != "fish" && -z ''${BASH_EXECUTION_STRING} ]]; then
-              shopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=""
-              exec fish $LOGIN_OPTION
-            fi
-          ''
-        else
-          ""
+      setopt AUTO_CD
+      setopt APPEND_HISTORY
+      setopt COMPLETE_IN_WORD
+      setopt EXTENDED_HISTORY
+      setopt HIST_EXPIRE_DUPS_FIRST
+      setopt HIST_FIND_NO_DUPS
+      setopt HIST_IGNORE_ALL_DUPS
+      setopt HIST_REDUCE_BLANKS
+      setopt HIST_SAVE_NO_DUPS
+      setopt HIST_VERIFY
+      setopt INTERACTIVE_COMMENTS
+      unsetopt BEEP
+      unsetopt FLOW_CONTROL
+
+      export KEYTIMEOUT=1
+      export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+      export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
+
+      mkdir -p "$HOME/.cache/zsh"
+      zmodload zsh/complist
+
+      zstyle ':completion:*' menu select
+      zstyle ':completion:*' matcher-list \
+        'm:{a-z}={A-Z}' \
+        'r:|[._-]=* r:|=*' \
+        'l:|=* r:|=*'
+      if (( ''${+LS_COLORS} )); then
+        zstyle ':completion:*' list-colors ''${(s.:.)LS_COLORS}
+      fi
+      zstyle ':completion:*' use-cache on
+      zstyle ':completion:*' cache-path "$HOME/.cache/zsh/.zcompcache"
+      zstyle ':completion:*:descriptions' format '[%d]'
+      zstyle ':completion:*' rehash true
+      zstyle ':completion:*' squeeze-slashes true
+
+      autoload -Uz edit-command-line
+      zle -N edit-command-line
+
+      take() {
+        [[ -n "$1" ]] || return 1
+        mkdir -p -- "$1" && cd -- "$1"
       }
 
       bindkey "\eh" backward-word
       bindkey "\ej" down-line-or-history
       bindkey "\ek" up-line-or-history
       bindkey "\el" forward-word
+      bindkey '^[[1;5D' backward-word
+      bindkey '^[[1;5C' forward-word
+      bindkey '^[[H' beginning-of-line
+      bindkey '^[[F' end-of-line
+      bindkey '^X^E' edit-command-line
+
       if [ -f $HOME/.zshrc-personal ]; then
         source $HOME/.zshrc-personal
       fi
@@ -98,6 +121,10 @@ in
       man = "batman";
       hosts = "dcli list-hosts";
       switch = "dcli switch-host";
+      ".." = "cd ..";
+      "..." = "cd ../..";
+      "...." = "cd ../../..";
+      reload = "exec zsh";
     };
   };
 }

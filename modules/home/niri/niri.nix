@@ -13,6 +13,7 @@ let
     stylixImage
     startupApps
     ;
+  startupCommands = variables.startupCommands or [ ];
 
   barChoice = variables.barChoice or "waybar";
 
@@ -39,6 +40,7 @@ let
       host
       stylixImage
       startupApps
+      startupCommands
       barChoice
       ;
   };
@@ -67,6 +69,7 @@ in
     grim
     slurp
     wl-clipboard
+    cliphist
     swappy
     xdg-desktop-portal-gnome
   ];
