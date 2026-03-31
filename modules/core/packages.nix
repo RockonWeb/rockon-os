@@ -42,6 +42,8 @@
   environment.systemPackages = with pkgs; [
     # amfora # Fancy Terminal Browser For Gemini Protocol
     antigravity
+    corefonts
+    vistafonts
     fzf
     vesktop
     libreoffice-fresh
@@ -79,6 +81,7 @@
     alacritty # Terminal Emulator (default for niri)
     fuzzel # Application Launcher (default for niri)
     inxi # CLI System Information Tool
+    jq # Required by Noctalia Clipper to load notecards from JSON files
     killall # For Killing All Instances Of Programs
     libnotify # For Notifications
     lm_sensors # Used For Getting Hardware Temps
