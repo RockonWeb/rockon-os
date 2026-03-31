@@ -9,9 +9,19 @@
 let
   variables = import ../../../hosts/${host}/variables.nix;
   barChoice = variables.barChoice or "waybar";
+  terminal = variables.terminal or "ghostty";
   enableNoctalia = barChoice == "noctalia";
   projectRoot = "${config.home.homeDirectory}/rockon-os";
   brandIconPath = "${projectRoot}/modules/home/fastfetch/blackdontrans.png";
+  launcherTerminalCommand =
+    if terminal == "ghostty" then
+      "ghostty -e"
+    else if terminal == "kitty" then
+      "kitty -e"
+    else if terminal == "alacritty" then
+      "alacritty -e"
+    else
+      "${terminal} -e";
 in
 {
   imports = lib.optionals enableNoctalia [
@@ -26,11 +36,11 @@ in
       text = builtins.toJSON {
         appLauncher = {
           backgroundOpacity = 1;
-          enableClipboardHistory = false;
+          enableClipboardHistory = true;
           pinnedExecs = [ ];
           position = "center";
           sortByMostUsed = true;
-          terminalCommand = "xterm -e";
+          terminalCommand = launcherTerminalCommand;
           useApp2Unit = false;
         };
         audio = {

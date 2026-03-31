@@ -12,6 +12,7 @@ let
   dmsPath = "${config.home.homeDirectory}/.local/bin/dms";
   projectRoot = "${config.home.homeDirectory}/rockon-os";
   noctaliaSyncScript = "${projectRoot}/modules/home/noctalia-shell/sync-from-gui.py";
+  steamLauncher = ''"steam-no-proxy"'';
 
   # Determine launcher command based on barChoice
   launcherCommand =
@@ -295,12 +296,13 @@ in
       Mod+Alt+P { power-off-monitors; }
 
       // === Custom Application Launchers ===
+      Mod+Shift+V { spawn "cliphist-picker"; }
       Mod+G { spawn "Telegram"; }
       Mod+Shift+Ctrl+C { spawn "${terminal}" "claude"; }
       Ctrl+Mod+N { spawn "obsidian"; }
       Mod+B { spawn "${browser}"; }
       Mod+D { spawn "vesktop"; }
-      Mod+S { spawn "steam"; }
+      Mod+S { spawn ${steamLauncher}; }
       Mod+Shift+O { spawn "obs"; }
       Mod+Z { spawn "zed-fix"; }
       Mod+F { spawn "thunar"; }

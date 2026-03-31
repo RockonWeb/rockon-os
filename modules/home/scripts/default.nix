@@ -18,6 +18,7 @@
     (import ./web-search.nix { inherit pkgs; })
     (import ./rofi-launcher.nix { inherit pkgs; })
     (import ./screenshootin.nix { inherit pkgs; })
+    (import ./cliphist-picker.nix { inherit pkgs; })
     (import ./hm-find.nix { inherit pkgs; })
     (import ./zed-fix.nix { inherit pkgs; })
     (import ./niri-gaming-mode.nix { inherit pkgs; })

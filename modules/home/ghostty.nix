@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   programs.ghostty = {
     enable = true;
     package = pkgs.ghostty;
@@ -47,6 +48,10 @@
     keybind = alt+s>x=close_surface
 
     keybind = alt+s>n=new_window
+    keybind = alt+s>q=toggle_quick_terminal
+    keybind = alt+s>p=toggle_command_palette
+    keybind = alt+s>u=jump_to_prompt:-1
+    keybind = alt+s>w=write_scrollback_file:open
 
     # tabs
     keybind = alt+s>c=new_tab

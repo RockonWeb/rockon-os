@@ -108,6 +108,7 @@
   #animChoice = ../../modules/home/hyprland/animations-moving.nix;
 
   # Startup Applications
+  # This is the authoritative per-host autostart list for user apps in Niri.
   startupApps = [
   ];
 }

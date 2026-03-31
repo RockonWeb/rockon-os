@@ -14,7 +14,8 @@ let
       sha256 = "sha256-nydm7PTcUi9XSWXrzWNttHeNFBulFRV87C5/yuCtf9k=";
     }
   ];
-in {
+in
+{
   nixpkgs.config.allowUnfree = true;
 
   programs.vscode = {
@@ -24,12 +25,14 @@ in {
         "http.proxy" = "http://127.0.0.1:8080";
         "http.proxyStrictSSL" = false;
         "workbench.colorTheme" = lib.mkForce "Default Dark Modern";
+        "markdown-preview-enhanced.chromePath" =
+          lib.mkForce "/run/current-system/sw/bin/google-chrome-stable";
 
         "editor.fontSize" = lib.mkForce 16;
         "terminal.integrated.fontSize" = lib.mkForce 16;
 
-	"geminicodeassist.project" = lib.mkForce "project-7555ff4f-a441-4630-934";
-        "geminicodeassist.agentYoloMode" = true;  
+        "geminicodeassist.project" = lib.mkForce "project-7555ff4f-a441-4630-934";
+        "geminicodeassist.agentYoloMode" = true;
       };
 
       extensions =
@@ -45,4 +48,4 @@ in {
         ++ marketplaceExtensions;
     };
   };
-} 
+}

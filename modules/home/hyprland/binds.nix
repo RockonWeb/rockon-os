@@ -67,7 +67,7 @@ let
     "$modifier SHIFT,S,exec,screenshootin"
     "$modifier,D,exec,vesktop"
     "$modifier SHIFT,V,exec,virt-manager"
-    "$modifier,S,exec,steam"
+    "$modifier,S,exec,steam-no-proxy"
     "$modifier SHIFT,O,exec,flatpak run com.obsproject.Studio"
     "$modifier SHIFT,Z,exec,zeditor"
     "$modifier,C,exec,hyprpicker -a"

@@ -124,6 +124,18 @@ fr   # dcli rebuild
 fu   # dcli update
 ```
 
+Fast desktop actions:
+
+```text
+Mod+Space    Noctalia launcher
+Mod+Y        fuzzel fallback launcher
+Mod+Shift+V  clipboard history picker
+alt+s q      Ghostty quick terminal
+alt+s p      Ghostty command palette
+alt+s u      Ghostty jump to previous prompt
+alt+s w      Ghostty open scrollback in a temp file
+```
+
 Development shell:
 
 ```bash
@@ -156,6 +168,17 @@ defaultShell = "zsh";
 barChoice = "noctalia";
 stylixImage = ../../wallpapers/Valley.jpg;
 ```
+
+Autostart apps:
+
+```nix
+startupApps = [
+  "Telegram"
+  "vesktop"
+];
+```
+
+`startupApps` is now the authoritative per-host autostart list for user applications in Niri.
 
 Monitors:
 
