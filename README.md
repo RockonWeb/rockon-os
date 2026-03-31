@@ -1,175 +1,299 @@
-# Rockon OS
+<p align="center">
+  <img src="image.png" alt="Rockon OS Desktop" width="900"/>
+</p>
 
-Personal NixOS flake for my machines and workflow.
+<h1 align="center">⚡ Rockon OS</h1>
 
-This repo started from [ZaneyOS](https://gitlab.com/zaney/zaneyos), then passed through [Black Don OS](https://gitlab.com/theblackdon/black-don-os), and is now maintained as my own setup under `rockon-os`.
+<p align="center">
+  <b>A modular, flake-based NixOS configuration built for power users.</b><br/>
+  <sub>Niri · Noctalia · NVIDIA-first · Multi-host · Declarative everything.</sub>
+</p>
 
-Previous READMEs are preserved:
+<p align="center">
+  <a href="#-quick-start"><img src="https://img.shields.io/badge/NixOS-26.05_(Yarara)-5277C3?style=for-the-badge&logo=nixos&logoColor=white" alt="NixOS"/></a>
+  <a href="#-features"><img src="https://img.shields.io/badge/Compositor-Niri_25.11-B48EAD?style=for-the-badge" alt="Niri"/></a>
+  <a href="#-hardware-profiles"><img src="https://img.shields.io/badge/GPU-NVIDIA_Ready-76B900?style=for-the-badge&logo=nvidia&logoColor=white" alt="NVIDIA"/></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-E5C07B?style=for-the-badge" alt="MIT License"/></a>
+</p>
 
-- [README-ORIGINAL-BLACK-DON-OS.md](README-ORIGINAL-BLACK-DON-OS.md)
-- [README-ORIGINAL-ZANEYOS.md](README-ORIGINAL-ZANEYOS.md)
+---
 
-![rockon-os desktop](/image.png)
+## 📖 Overview
 
-## What This Repo Is
+**Rockon OS** is not a generic starter distro — it's a battle-tested, personal NixOS configuration with a clean multi-host architecture that anyone can fork, adapt, and deploy on their own machines.
 
-This is not a generic starter distro. It is my personal NixOS configuration with a reusable multi-host structure.
+The entire system — from GPU drivers and desktop keybinds to shell aliases and startup apps — is declared in Nix and managed through a single flake. One repo, any number of machines, fully reproducible.
 
-Current focus:
+> **Lineage:** This project evolved from [ZaneyOS](https://gitlab.com/zaney/zaneyos) → [Black Don OS](https://gitlab.com/theblackdon/black-don-os) → **Rockon OS**.
+> Original READMEs are preserved: [`README-ORIGINAL-ZANEYOS.md`](README-ORIGINAL-ZANEYOS.md) · [`README-ORIGINAL-BLACK-DON-OS.md`](README-ORIGINAL-BLACK-DON-OS.md)
 
-- `niri` as the active Wayland compositor
-- `noctalia` as the shell/bar layer
-- NVIDIA-first desktop setup
-- `dcli` for common rebuild and maintenance tasks
-- Flake-based host management
+---
 
-The repository still contains upstream Hyprland-related modules, but the current home configuration imports `niri` and does not enable Hyprland by default.
+## ✨ Features
 
-## Current State
+<table>
+<tr>
+<td width="50%">
 
-Tracked hosts in the tree:
+### 🖥️ Desktop Stack
+- **[Niri](https://github.com/YaLTeR/niri)** — scrollable-tiling Wayland compositor
+- **[Noctalia Shell](https://github.com/noctalia-dev/noctalia-shell)** — modern bar & launcher layer
+- **[Ghostty](https://ghostty.org)** — GPU-accelerated terminal
+- **[Stylix](https://github.com/danth/stylix)** — system-wide theming from a single wallpaper
+- **Fuzzel** — fast Wayland app launcher
 
-- `rockon`: main machine
-- `nix-test`: test machine
-- `default`: template used by the installer
+</td>
+<td width="50%">
 
-Current `rockon` defaults:
+### 🛠️ Developer Tooling
+- **`dcli`** — custom CLI for rebuild, deploy, diagnostics & git
+- **[nvf](https://github.com/notashelf/nvf)** — declarative Neovim config
+- **Flutter + Android SDK** — dev shell via `nix develop`
+- **Doom Emacs** — pre-configured module
+- **AI code editors** — optional Claude Code, Gemini CLI, Cursor
 
-- GPU profile: `nvidia`
-- Browser: `google-chrome`
-- Terminal: `ghostty`
-- Shell: `zsh`
-- Bar/shell: `noctalia`
-- Timezone: `Asia/Irkutsk`
-- Keyboard layout: `us, ru`
+</td>
+</tr>
+<tr>
+<td>
 
-Available hardware profiles:
+### 🎮 Gaming & Media
+- **Steam + Gamescope + Proton** — toggle with one flag
+- **Niri Gaming Mode** — dedicated fullscreen keybind profile
+- **OBS Studio, MPV, Rhythmbox** — media out of the box
+- **Yandex Music** — included in packages
 
-- `nvidia`
-- `nvidia-laptop`
-- `amd`
-- `intel`
-- `vm`
+</td>
+<td>
 
-## Repository Layout
+### 🏗️ Architecture
+- **Multi-host flake** — one repo drives N machines
+- **Hardware profiles** — plug-and-play GPU configs
+- **Per-host overrides** — keybinds, monitors, window rules
+- **Modular feature flags** — toggle gaming, productivity, comms
+- **Lanzaboote** — Secure Boot support
 
-```text
-rockon-os/
-├── flake.nix
-├── hosts/
-│   ├── default/          # Template for new machines
-│   ├── nix-test/         # Test host
-│   └── rockon/           # Main host
-├── modules/
-│   ├── core/             # System-wide NixOS modules
-│   ├── drivers/          # GPU and hardware drivers
-│   └── home/             # Home Manager modules, scripts, desktop config
-├── profiles/             # Hardware entry points
-├── wallpapers/
-└── install.sh            # Host bootstrap script
-```
+</td>
+</tr>
+</table>
 
-## Install Flow
+---
 
-Install base NixOS first, then bootstrap this repo on top of it.
+## 🖼️ The Stack at a Glance
 
-1. Install NixOS from the official ISO.
-2. Log into the new system.
-3. Open a shell and install the required tools:
+| Layer | Choice |
+|---|---|
+| **OS** | NixOS 26.05 (Yarara) — `nixos-unstable` |
+| **Kernel** | Linux 6.18-zen1 |
+| **Compositor** | Niri 25.11 (Wayland) |
+| **Shell/Bar** | Noctalia |
+| **Terminal** | Ghostty 1.3.1 |
+| **Shell** | Zsh 5.9 + Starship prompt |
+| **Browser** | Google Chrome (default) |
+| **Theme** | Tela-purple-dark icons · Bibata-Modern-Ice cursor |
+| **Font** | BerkeleyMono Nerd Font |
+| **Auth** | greetd + tuigreet |
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+A fresh NixOS installation from the [official ISO](https://nixos.org/download/).
+
+### Installation
 
 ```bash
+# 1. Enter a shell with required tools
 nix-shell -p git pciutils
-```
 
-4. Clone the repo into your home directory:
-
-```bash
+# 2. Clone the repo
 cd ~
 git clone https://github.com/RockonWeb/rockon-os.git
 cd rockon-os
-```
 
-5. Run the installer:
-
-```bash
+# 3. Run the interactive installer
 ./install.sh
 ```
 
-The installer will:
+The installer will walk you through:
 
-- ask for hostname, username, timezone, keyboard, and GPU profile
-- create `hosts/<hostname>/`
-- create host-specific `niri` and `hyprland` override files
-- add the host to `flake.nix`
-- build and switch to the new system
+| Step | What happens |
+|---|---|
+| **Hostname** | Creates `hosts/<name>/` with all config files |
+| **Username** | Sets up user, git, Home Manager |
+| **Timezone & Keyboard** | Written to `variables.nix` |
+| **GPU Detection** | Auto-detects GPU → assigns hardware profile |
+| **Flake Registration** | Adds your host to `flake.nix` |
+| **Build & Switch** | `nixos-rebuild switch` with your new config |
 
-## Daily Workflow
+After a reboot, you're running Rockon OS.
 
-Main commands:
+---
+
+## 🗂️ Repository Structure
+
+```
+rockon-os/
+├── flake.nix                  # Flake entrypoint — all hosts defined here
+├── install.sh                 # Interactive bootstrap installer
+│
+├── hosts/
+│   ├── default/               # Template for new machines
+│   ├── rockon/                # Main host config
+│   │   ├── default.nix        #   Host-level NixOS imports
+│   │   ├── variables.nix      #   All per-host knobs (browser, GPU, apps…)
+│   │   └── hardware.nix       #   Auto-generated hardware config
+│   └── nix-test/              # Test host
+│
+├── modules/
+│   ├── core/                  # System-wide NixOS modules
+│   │   ├── packages.nix       #   Global packages
+│   │   ├── gaming-support.nix #   Steam, Gamescope, controllers
+│   │   ├── security.nix       #   Polkit, GNUPG, SSH
+│   │   ├── fonts.nix          #   System fonts
+│   │   └── ...                #   Boot, networking, services, etc.
+│   │
+│   ├── drivers/               # GPU & hardware drivers
+│   │   ├── nvidia-drivers.nix
+│   │   ├── amd-drivers.nix
+│   │   ├── intel-drivers.nix
+│   │   └── vm-guest-services.nix
+│   │
+│   └── home/                  # Home Manager modules
+│       ├── niri/              #   Niri config (keybinds, layout, window rules)
+│       ├── noctalia-shell/    #   Bar/shell (synced via GUI or Nix)
+│       ├── scripts/           #   dcli, screenshooting, web-search, etc.
+│       ├── editors/           #   Doom Emacs, nvf (Neovim)
+│       ├── ghostty.nix        #   Terminal config
+│       ├── zsh/               #   Shell config + aliases
+│       └── ...                #   40+ individual tool configs
+│
+├── profiles/                  # Hardware profile entrypoints
+│   ├── nvidia/
+│   ├── nvidia-laptop/
+│   ├── amd/
+│   ├── intel/
+│   └── vm/
+│
+└── wallpapers/                # Wallpaper collection for Stylix theming
+```
+
+---
+
+## 🎛️ Hardware Profiles
+
+Pick a profile during install — or change it later in `flake.nix`.
+
+| Profile | Use case |
+|---|---|
+| `nvidia` | Desktop with a dedicated NVIDIA GPU |
+| `nvidia-laptop` | Laptop with NVIDIA Optimus (Prime) |
+| `amd` | AMD GPU (AMDGPU driver) |
+| `intel` | Intel integrated graphics |
+| `vm` | Virtual machine (VirtIO / VMware) |
+
+---
+
+## 🔧 Daily Workflow
+
+### `dcli` — The Management CLI
+
+All system operations go through `dcli`:
 
 ```bash
-dcli rebuild
-dcli rebuild-boot
-dcli update
-dcli list-hosts
-dcli build <host>
-dcli deploy <host>
-dcli diag
+# System
+dcli rebuild            # Build & switch current host
+dcli rebuild-boot       # Build, activate on next reboot
+dcli update             # Update flake inputs + rebuild
+
+# Multi-host
+dcli build <host>       # Build a specific host (no activation)
+dcli deploy <host>      # Build & switch to a specific host
+dcli list-hosts         # Show all configured hosts
+
+# Maintenance
+dcli cleanup            # Remove old generations
+dcli diag               # Generate ~/diag.txt system report
+dcli trim               # Run fstrim for SSD health
+
+# Git shortcuts
+dcli commit "message"   # Stage all + commit
+dcli push / pull        # Sync with origin
+dcli status             # git status
 ```
 
-Shell aliases:
+**Shell aliases** for the impatient:
 
-```bash
-fr   # dcli rebuild
-fu   # dcli update
+| Alias | Expands to |
+|---|---|
+| `fr` | `dcli rebuild` |
+| `fu` | `dcli update` |
+
+---
+
+## ⌨️ Key Bindings
+
+### Niri (Desktop)
+
+| Shortcut | Action |
+|---|---|
+| `Mod + Space` | Noctalia launcher |
+| `Mod + Y` | Fuzzel fallback launcher |
+| `Mod + Shift + V` | Clipboard history picker |
+
+### Ghostty (Terminal)
+
+| Shortcut | Action |
+|---|---|
+| `Alt + S, Q` | Quick terminal |
+| `Alt + S, P` | Command palette |
+| `Alt + S, U` | Jump to previous prompt |
+| `Alt + S, W` | Open scrollback in temp file |
+
+---
+
+## ⚙️ Customization
+
+Almost all per-host tuning lives in a single file:
+
+```
+hosts/<your-host>/variables.nix
 ```
 
-Fast desktop actions:
-
-```text
-Mod+Space    Noctalia launcher
-Mod+Y        fuzzel fallback launcher
-Mod+Shift+V  clipboard history picker
-alt+s q      Ghostty quick terminal
-alt+s p      Ghostty command palette
-alt+s u      Ghostty jump to previous prompt
-alt+s w      Ghostty open scrollback in a temp file
-```
-
-Development shell:
-
-```bash
-nix develop
-```
-
-The default dev shell is set up for Flutter and Android tooling.
-
-## Where I Change Things
-
-Most day-to-day changes happen here:
-
-- `hosts/<host>/variables.nix`: machine-specific settings
-- `hosts/<host>/default.nix`: host-level NixOS imports and services
-- `modules/home/niri/keybinds.nix`: shared Niri keybinds
-- `modules/home/niri/hosts/<host>/`: host-specific Niri overrides
-- `modules/home/xdg.nix`: XDG defaults and app associations
-- `modules/home/scripts/dcli.nix`: `dcli` implementation
-
-## Customization Notes
-
-Most per-host tuning lives in `hosts/<host>/variables.nix`.
-
-Examples:
+### Core Settings
 
 ```nix
-browser = "google-chrome";
-terminal = "ghostty";
-defaultShell = "zsh";
-barChoice = "noctalia";
-stylixImage = ../../wallpapers/Valley.jpg;
+browser      = "google-chrome";   # Default browser
+terminal     = "ghostty";         # Default terminal
+defaultShell = "zsh";             # "zsh" or "fish"
+barChoice    = "noctalia";        # "noctalia" or "dms"
+timeZone     = "Asia/Irkutsk";
 ```
 
-Autostart apps:
+### Feature Flags
+
+Enable or disable entire feature groups with a single boolean:
+
+```nix
+gamingSupportEnable    = true;    # Steam, Gamescope, ProtonUp, controllers
+enableCommunicationApps = true;  # Discord, Teams, Zoom, Telegram
+enableProductivityApps  = true;  # Obsidian, GNOME Boxes, QuickEmu
+enableExtraBrowsers     = true;  # Vivaldi, Brave, Firefox, Chromium
+aiCodeEditorsEnable     = true;  # Claude Code, Gemini CLI, Cursor
+flutterdevEnable        = true;  # Flutter + Android SDK dev shell
+```
+
+### Monitors
+
+```nix
+extraMonitorSettings = ''
+  monitor=DP-2,2560x1440@165.001,0x0,1.25
+'';
+```
+
+### Startup Apps
 
 ```nix
 startupApps = [
@@ -178,43 +302,83 @@ startupApps = [
 ];
 ```
 
-`startupApps` is now the authoritative per-host autostart list for user applications in Niri.
-
-Monitors:
+### Theming
 
 ```nix
-extraMonitorSettings = ''
-  monitor=DP-2,2560x1440@165.001,0x0,1.25
-'';
+stylixImage = ../../wallpapers/Valley.jpg;   # Stylix generates palette from this
 ```
 
-Optional features:
-
-```nix
-gamingSupportEnable = true;
-enableCommunicationApps = true;
-enableProductivityApps = true;
-enableExtraBrowsers = true;
-```
-
-After changing the config:
+After any change:
 
 ```bash
 dcli rebuild
 ```
 
-## Path Assumptions
+---
 
-This repo is expected to live at:
+## 📍 Where Things Live
+
+A quick map for when you need to change something specific:
+
+| What you want to change | Where to look |
+|---|---|
+| Per-host settings (browser, GPU, apps) | `hosts/<host>/variables.nix` |
+| Host NixOS imports & services | `hosts/<host>/default.nix` |
+| Niri keybinds (shared) | `modules/home/niri/keybinds.nix` |
+| Niri keybinds (per-host) | `modules/home/niri/hosts/<host>/` |
+| XDG defaults & file associations | `modules/home/xdg.nix` |
+| `dcli` implementation | `modules/home/scripts/dcli.nix` |
+| Global system packages | `modules/core/packages.nix` |
+| Gaming support config | `modules/core/gaming-support.nix` |
+| GPU driver settings | `modules/drivers/` |
+
+---
+
+## 🧩 Development Shell
+
+The flake includes a pre-configured Flutter + Android development environment:
 
 ```bash
-~/rockon-os
+nix develop
 ```
 
-Some modules and helper scripts still contain hardcoded paths for that location. A few legacy `zaneyos` references also still exist in the tree, so if I ever move the repo, those need to be cleaned up together.
+This drops you into a shell with `flutter`, `android-sdk`, and `jdk11` ready to go — no system-level installation needed.
 
-## Upstream
+---
 
-- Origin: `git@github.com:RockonWeb/rockon-os.git`
-- Upstream fork source: `https://gitlab.com/theblackdon/black-don-os`
-- Original upstream: `https://gitlab.com/zaney/zaneyos`
+## 📝 Additional Documentation
+
+| Document | Description |
+|---|---|
+| [`dcli.md`](dcli.md) | Full `dcli` reference manual |
+| [`FAQ.md`](FAQ.md) | Frequently asked questions |
+| [`TROUBLESHOOTING.md`](TROUBLESHOOTING.md) | Common issues and fixes |
+| [`CHANGELOG.md`](CHANGELOG.md) | Version history and release notes |
+| [`CONTRIBUTING.md`](CONTRIBUTING.md) | Contribution guidelines |
+
+---
+
+## 📌 Notes
+
+- The repo is expected to live at **`~/rockon-os`**. Some modules and helper scripts contain hardcoded paths to this location.
+- Legacy `zaneyos` references still exist in parts of the tree — these will be cleaned up in a future pass.
+- Hyprland modules are still present in the repo but are **not enabled by default**. Niri is the active compositor.
+
+---
+
+## 🤝 Credits & Upstream
+
+This project stands on the shoulders of:
+
+- **[ZaneyOS](https://gitlab.com/zaney/zaneyos)** by Tyler Kelley — the original foundation
+- **[Black Don OS](https://gitlab.com/theblackdon/black-don-os)** by Black Don — multi-host architecture & NVIDIA focus
+- **[Niri](https://github.com/YaLTeR/niri)** · **[Noctalia](https://github.com/noctalia-dev/noctalia-shell)** · **[Stylix](https://github.com/danth/stylix)** · **[nvf](https://github.com/notashelf/nvf)** — the tools that make this desktop tick
+
+---
+
+<p align="center">
+  <sub>MIT License © 2026 RockonWeb</sub><br/>
+  <a href="https://github.com/RockonWeb/rockon-os">
+    <img src="https://img.shields.io/badge/GitHub-RockonWeb%2Frockon--os-181717?style=flat-square&logo=github" alt="GitHub"/>
+  </a>
+</p>
