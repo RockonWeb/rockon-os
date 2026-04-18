@@ -2,7 +2,7 @@
   <img src="img/image.png" alt="Rockon OS Desktop" width="900"/>
 </p>
 
-<h1 align="center">⚡ Rockon OS</h1>
+<h1 align="center">Rockon OS</h1>
 
 <p align="center">
   <b>A modular, flake-based NixOS configuration built for power users.</b><br/>
@@ -25,7 +25,6 @@
 The entire system — from GPU drivers and desktop keybinds to shell aliases and startup apps — is declared in Nix and managed through a single flake. One repo, any number of machines, fully reproducible.
 
 > **Lineage:** This project evolved from [ZaneyOS](https://gitlab.com/zaney/zaneyos) → [Black Don OS](https://gitlab.com/theblackdon/black-don-os) → **Rockon OS**.
-> Original READMEs are preserved: [`README-ORIGINAL-ZANEYOS.md`](README-ORIGINAL-ZANEYOS.md) · [`README-ORIGINAL-BLACK-DON-OS.md`](README-ORIGINAL-BLACK-DON-OS.md)
 
 ---
 
