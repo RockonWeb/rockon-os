@@ -25,8 +25,7 @@ in
   spawn-at-startup "bash" "-c" "dbus-update-activation-environment --systemd WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP=niri XDG_SESSION_TYPE=wayland && systemctl --user restart xdg-desktop-portal.service"
   spawn-at-startup "bash" "-c" "wl-paste --watch cliphist store &"
   ${barStartupCommand}
-  spawn-at-startup "bash" "-c" "swww-daemon && sleep 1 && swww img '${stylixImage}'"
-  spawn-at-startup "wal" "-R"
+  spawn-at-startup "bash" "-c" "awww-daemon && sleep 1 && awww img '${stylixImage}'"
   spawn-at-startup "lxqt-policykit-agent"
 ${userStartupCommands}
 ${delayedStartupCommands}

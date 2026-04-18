@@ -41,8 +41,7 @@
   enableProductivityApps = false; # Obsidian, GNOME Boxes, QuickEmu
   aiCodeEditorsEnable = false; # Claude-code, gemini-cli, cursor
 
-  # Desktop Environment
-  enableHyprlock = false; # Set to false if using DMS/Noctalia lock screens
+
 
   # Bar/Shell Choice
   barChoice = "noctalia"; # Options: "dms" or "noctalia"
@@ -53,8 +52,6 @@
 
   # Theming
   stylixImage = ../../wallpapers/clouds.jpg;
-  #waybarChoice = ../../modules/home/waybar/waybar-ddubs.nix;  # Waybar temporarily disabled
-  animChoice = ../../modules/home/hyprland/animations-end4.nix;
 
   # Startup Applications
   startupApps = [ ];

@@ -1,8 +1,10 @@
 {
-  description = "Rockon OS (Based on ZaneyOS)";
+  description = "Rockon OS";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    flake-parts.url = "github:hercules-ci/flake-parts";
+
     lanzaboote = {
       url = "github:nix-community/lanzaboote/v1.0.0";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -14,10 +16,8 @@
     nvf = {
       url = "github:notashelf/nvf";
       inputs.nixpkgs.follows = "nixpkgs";
-    }; 
+    };
     stylix.url = "github:danth/stylix";
-    flake-utils.url = "github:numtide/flake-utils";   
-    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     zen-browser.url = "github:0xc000022070/zen-browser-flake";
     quickshell = {
       url = "github:outfoxxed/quickshell";
@@ -31,96 +31,73 @@
       url = "github:fpletz/flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-index-database = {
+      url = "github:Mic92/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs =
-    { nixpkgs, flake-utils, ... }@inputs:
-    let
-      system = "x86_64-linux";
+  outputs = inputs@{ flake-parts, nixpkgs, ... }:
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = [ "x86_64-linux" "aarch64-linux" ];
 
-      # Helper function to create a host configuration
-      mkHost =
-        {
-          hostname,
-          profile,
-          username,
-        }:
-        nixpkgs.lib.nixosSystem {
-          inherit system;
-          specialArgs = {
-            inherit inputs;
-            host = hostname;
-            inherit profile;
-            inherit username;
-            zen-browser = inputs.zen-browser.packages.${system}.default;
-            helium-browser = inputs.helium-browser.packages.${system}.helium-browser;
-          };
-          modules = [
-            ./profiles/${profile}
-          ];
-        };
-
-    in
-    {
-      nixosConfigurations = {
-        # Default template configuration
-        # Users will create their own host configurations during installation
-        default = mkHost {
-          hostname = "default";
-          profile = "nvidia";
-          username = "user";
-        };
-
-        rockon = mkHost {
-          hostname = "rockon";
-          profile = "nvidia";
-          username = "rockon";
-        };
-
-        nix-tester = mkHost {
-          hostname = "nix-tester";
-          profile = "intel";
-          username = "don";
-        };
-
-        nix-test = mkHost {
-          hostname = "nix-test";
-          profile = "intel";
-          username = "don";
-        };
-      };
-
-      # Flutter development environment
-      devShells = flake-utils.lib.eachDefaultSystem (
-        system:
-        let
-          pkgs = import nixpkgs {
-            inherit system;
-            config = {
-              android_sdk.accept_license = true;
-              allowUnfree = true;
-            };
-          };
-          buildToolsVersion = "33.0.2";
-          androidComposition = pkgs.androidenv.composeAndroidPackages {
-            buildToolsVersions = [ buildToolsVersion ];
-            platformVersions = [ "33" ];
-            abiVersions = [ "arm64-v8a" ];
-          };
-          androidSdk = androidComposition.androidsdk;
-        in
-        {
-          default =
-            with pkgs;
-            mkShell rec {
-              ANDROID_SDK_ROOT = "${androidSdk}/libexec/android-sdk";
-              buildInputs = [
-                flutter
-                androidSdk
-                jdk11
+      flake = {
+        nixosConfigurations =
+          let
+            mkHost = { hostname, profile, username }: nixpkgs.lib.nixosSystem {
+              system = "x86_64-linux"; # Using standard x86_64 system for all hosts
+              specialArgs = {
+                inherit inputs;
+                host = hostname;
+                inherit profile;
+                inherit username;
+                zen-browser = inputs.zen-browser.packages."x86_64-linux".default;
+                helium-browser = inputs.helium-browser.packages."x86_64-linux".helium-browser;
+              };
+              modules = [
+                ./profiles/${profile}
+                inputs.nix-index-database.nixosModules.nix-index
               ];
             };
-        }
-      );
+          in
+          {
+            default = mkHost { hostname = "default"; profile = "nvidia"; username = "user"; };
+            rockon = mkHost { hostname = "rockon"; profile = "nvidia"; username = "rockon"; };
+            nix-tester = mkHost { hostname = "nix-tester"; profile = "intel"; username = "don"; };
+            nix-test = mkHost { hostname = "nix-test"; profile = "intel"; username = "don"; };
+          };
+      };
+
+      perSystem = { system, pkgs, self', ... }:
+        let
+          treefmtEval = inputs.treefmt-nix.lib.evalModule pkgs {
+            programs.nixfmt.enable = true;
+          };
+        in
+        {
+          formatter = treefmtEval.config.build.wrapper;
+
+          checks =
+            let
+              # Verify all NixOS configurations evaluate correctly
+              nixosChecks = nixpkgs.lib.mapAttrs' (name: config:
+                nixpkgs.lib.nameValuePair "nixos-${name}" (
+                  pkgs.runCommand "eval-${name}" {} ''
+                    echo "Evaluating ${name}: ${builtins.unsafeDiscardStringContext config.config.system.build.toplevel.drvPath}"
+                    touch $out
+                  ''
+                )
+              ) (nixpkgs.lib.filterAttrs (_: config: config.pkgs.system == system) inputs.self.nixosConfigurations);
+            in
+            nixosChecks // {
+              formatting = treefmtEval.config.build.check inputs.self;
+            };
+        };
+
+
     };
 }

@@ -199,7 +199,7 @@ in
         ;;
       list-gens)
         echo "--- User Generations ---"
-        nix-env --list-generations | cat || echo "Could not list user generations."
+        nix profile history | cat || echo "Could not list user generations."
         echo ""
         echo "--- System Generations ---"
         nix profile history --profile /nix/var/nix/profiles/system | cat || echo "Could not list system generations."

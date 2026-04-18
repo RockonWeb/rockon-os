@@ -213,7 +213,7 @@ echo -e "  Browser:       zen"
 echo -e "  Terminal:      kitty"
 echo -e "  Shell:         zsh"
 echo -e "  Bar:           noctalia"
-echo -e "  Window Mgrs:   Both Hyprland and Niri (choose at login)"
+echo -e "  Window Mgrs:   Niri (default)"
 echo ""
 
 read -p "Continue with installation? [Y/n]: " proceed
@@ -283,8 +283,7 @@ cat > "hosts/$hostname/variables.nix" << EOF
   enableProductivityApps = false;    # Obsidian, GNOME Boxes, QuickEmu
   aiCodeEditorsEnable = false;       # Claude-code, gemini-cli, cursor
 
-  # Desktop Environment
-  enableHyprlock = false;  # Set to false if using DMS/Noctalia lock screens
+
 
   # Bar/Shell Choice
   barChoice = "noctalia";      # Options: "dms" or "noctalia"
@@ -293,10 +292,7 @@ cat > "hosts/$hostname/variables.nix" << EOF
   # Shell Choice
   defaultShell = "zsh";   # Options: "fish" or "zsh"
 
-  # Theming
   stylixImage = ../../wallpapers/clouds.jpg;
-  #waybarChoice = ../../modules/home/waybar/waybar-ddubs.nix;  # Waybar temporarily disabled
-  animChoice = ../../modules/home/hyprland/animations-end4.nix;
 
   # Startup Applications
   startupApps = [];
@@ -306,55 +302,8 @@ EOF
 print_success "Host configuration created"
 echo ""
 
-# Create Hyprland host-specific configuration files
+# Window Manager configuration
 print_header "Creating Window Manager Host Configurations"
-mkdir -p "modules/home/hyprland/hosts/$hostname"
-
-# Create binds.nix for Hyprland
-cat > "modules/home/hyprland/hosts/$hostname/binds.nix" << 'EOF'
-{host, ...}: let
-  inherit
-    (import ../../../../hosts/${host}/variables.nix)
-    browser
-    terminal
-    ;
-in {
-  # Host-specific binds for $HOSTNAME
-  # These will be merged with the default binds
-  bind = [
-    # Add host-specific keybinds here
-  ];
-
-  bindm = [
-    # Add host-specific mouse binds here
-  ];
-}
-EOF
-
-# Replace $HOSTNAME placeholder with actual hostname
-sed -i "s/\$HOSTNAME/$hostname/g" "modules/home/hyprland/hosts/$hostname/binds.nix"
-
-# Create windowrules.nix for Hyprland
-cat > "modules/home/hyprland/hosts/$hostname/windowrules.nix" << 'EOF'
-{host, ...}: let
-  inherit
-    (import ../../../../hosts/${host}/variables.nix)
-    extraMonitorSettings
-    ;
-in {
-  # Host-specific window rules for $HOSTNAME
-  # These will be merged with the default window rules
-  windowrule = [
-    # Add host-specific window rules here
-  ];
-}
-EOF
-
-# Replace $HOSTNAME placeholder with actual hostname
-sed -i "s/\$HOSTNAME/$hostname/g" "modules/home/hyprland/hosts/$hostname/windowrules.nix"
-
-print_success "Hyprland configurations created"
-
 # Create Niri host-specific configuration files
 mkdir -p "modules/home/niri/hosts/$hostname"
 
@@ -419,7 +368,7 @@ print_success "Niri configurations created"
 echo ""
 
 # Add new host files to git so flake can see them
-git add hosts/"$hostname"/ modules/home/hyprland/hosts/"$hostname"/ modules/home/niri/hosts/"$hostname"/ 2>/dev/null || true
+git add hosts/"$hostname"/ modules/home/niri/hosts/"$hostname"/ 2>/dev/null || true
 
 # Update flake.nix
 print_header "Updating Flake Configuration"
@@ -486,7 +435,7 @@ if sudo nixos-rebuild switch --flake .#"$hostname"; then
   echo ""
   echo -e "${BLUE}What's next:${NC}"
   echo -e "  1. Your configuration is in: ${GREEN}~/rockon-os/hosts/$hostname/${NC}"
-  echo -e "  2. Both Hyprland and Niri are available - select at login screen"
+  echo -e "  2. Niri is available at login screen"
   echo -e "  3. Customize: ${GREEN}~/rockon-os/hosts/$hostname/variables.nix${NC}"
   echo -e "  4. Rebuild: ${GREEN}sudo nixos-rebuild switch --flake ~/rockon-os#$hostname${NC}"
   echo ""

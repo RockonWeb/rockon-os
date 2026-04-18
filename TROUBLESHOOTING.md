@@ -1,6 +1,6 @@
-# Black Don OS - Troubleshooting Guide
+# Rockon OS - Troubleshooting Guide
 
-Quick solutions for common issues with Black Don OS.
+Quick solutions for common issues with Rockon OS.
 
 ## Installation Issues
 

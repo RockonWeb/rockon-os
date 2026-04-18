@@ -3,6 +3,7 @@
 in {
   programs.git = {
     enable = true;
+    signing.format = null; # Suppress home-manager warning
     # Updated to use programs.git.settings in nixpkgs-unstable
     settings = {
       user = {

@@ -12,17 +12,16 @@
     ./greetd.nix
     ./ly.nix
     ./sddm.nix
-    ./sysc-greet.nix
     ./hardware.nix
     ./network.nix
     ./nfs.nix
     ./nh.nix
+    ./nix-index.nix
     ./packages.nix
     ./printing.nix
     ./productivity.nix
     ./security.nix
     ./services.nix
-    ./starfish.nix
     ./steam.nix
     ./stylix.nix
     ./syncthing.nix

@@ -15,12 +15,12 @@
     dconf.enable = true;
     seahorse.enable = true;
     # Hyprland always enabled - both WMs available at login
-    hyprland = {
-      enable = false; # Create desktop file and dependencies
-      package = pkgs.hyprland;
-      portalPackage = pkgs.xdg-desktop-portal-hyprland;
-    };
-    hyprlock.enable = false; # Resolve pam issue, can be disabled per-host via enableHyprlock
+    #hyprland = {
+    #  enable = false; # Create desktop file and dependencies
+    #  package = pkgs.hyprland;
+    #  portalPackage = pkgs.xdg-desktop-portal-hyprland;
+    #};
+    #hyprlock.enable = false; # Resolve pam issue, can be disabled per-host via enableHyprlock
     fuse.userAllowOther = true;
     mtr.enable = true;
     gnupg.agent = {
@@ -41,9 +41,11 @@
 
   environment.systemPackages = with pkgs; [
     # amfora # Fancy Terminal Browser For Gemini Protocol
+    python3
     antigravity
+    ntfs3g
     corefonts
-    vistafonts
+    vista-fonts
     fzf
     vesktop
     libreoffice-fresh
@@ -76,7 +78,7 @@
     gping # graphical ping
     tuigreet # The Login Manager (Sometimes Referred To As Display Manager)
     htop # Simple Terminal Based System Monitor
-    hyprpicker # Color Picker
+
     eog # For Image Viewing
     alacritty # Terminal Emulator (default for niri)
     fuzzel # Application Launcher (default for niri)

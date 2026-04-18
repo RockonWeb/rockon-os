@@ -6,20 +6,11 @@
 }:
 let
   variables = import ../../hosts/${host}/variables.nix;
-  inherit (variables) waybarChoice;
 
-  # New variable system
-  windowManager = variables.windowManager or "hyprland";
-  barChoice = variables.barChoice or "waybar";
+  windowManager = variables.windowManager or "niri";
+  barChoice = variables.barChoice or "noctalia";
   defaultShell = variables.defaultShell or "zsh";
   useNvidia = variables.useNvidia or false;
-
-
-  # Legacy variable support (backwards compatibility)
-  enableDMS = variables.enableDankMaterialShell or false;
-  legacyBarChoice = if enableDMS then "dms" else "waybar";
-  actualBarChoice = if variables ? barChoice then barChoice else legacyBarChoice;
-
 in
 {
   imports = [
@@ -61,32 +52,23 @@ in
     ./environment.nix
   ]
 
-  # Window Managers - Both always available, user selects at login
+  # Window Manager
   ++ [
     ./niri
-   # ./hyprland
   ]
 
-  # Shell - conditional import based on defaultShell variable
- # ++ lib.optionals (defaultShell == "fish") [
-  #  ./fish
-  #  ./fish/fishrc-personal.nix
- # ]
+  # Shell
   ++ lib.optionals (defaultShell == "zsh") [
     ./zsh
   ]
+  ++ lib.optionals (defaultShell == "fish") [
+    ./fish
+  ]
 
-  # Bar - conditional import based on barChoice variable
-#  ++ lib.optionals (actualBarChoice == "dms") [
- #   ./dank-material-shell
- # ]
-  ++ lib.optionals (actualBarChoice == "noctalia") [
+  # Bar
+  ++ lib.optionals (barChoice == "noctalia") [
     ./noctalia-shell
   ];
- # ++ lib.optionals (actualBarChoice == "waybar") [
-  #  waybarChoice
-  #  ./swaync.nix # Only use swaync with waybar
- # ];
 
   # Allows usage in other modules for overriding settings
   _module.args = {

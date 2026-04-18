@@ -13,11 +13,24 @@ in
       ];
       substituters = [
         "https://hyprland.cachix.org"
+        "https://mirror.sjtu.edu.cn/nix-channels/store"
+        "https://mirrors.ustc.edu.cn/nix-channels/store"
+        "https://cache.nixos.org/"
       ];
       trusted-public-keys = [
         "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
       ];
+      http-connections = 50;
+      max-substitution-jobs = 20;
     };
+  };
+
+  # Proxy for nix-daemon to speed up downloads in restricted networks
+  systemd.services.nix-daemon.environment = {
+    http_proxy = "socks5h://127.0.0.1:1080";
+    https_proxy = "socks5h://127.0.0.1:1080";
+    all_proxy = "socks5h://127.0.0.1:1080";
   };
   time.timeZone = "${timeZone}";
   i18n.defaultLocale = "en_US.UTF-8";

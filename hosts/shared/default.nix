@@ -1,16 +1,15 @@
-{ pkgs, lib, inputs, ... }:
+{ pkgs, ... }:
 {
-  imports = [
-    ./hardware.nix
-    ./host-packages.nix
-    ./secure-boot.nix
-  ];
-		
-  # Enable sddm display manager
+  # Shared host-level defaults that should follow you across machines.
   services.displayManager.sddm.enable = true;
 
   networking.nftables.enable = true;
-  services.v2raya.enable = true;  
+  services.v2raya.enable = true;
+
+  zramSwap = {
+    enable = true;
+    memoryPercent = 25;
+  };
 
   services.udev.extraRules = ''
     SUBSYSTEM=="hidraw", ATTRS{idVendor}=="342d", ATTRS{idProduct}=="e40f", TAG+="uaccess"
@@ -20,11 +19,10 @@
     SUBSYSTEM=="usb", ATTRS{idVendor}=="342d", ATTRS{idProduct}=="e410", TAG+="uaccess"
   '';
 
-
-
-  # Keep niri available at system level for ly display manager to detect it
+  # Keep niri available at system level for the display manager.
   programs.niri.package = pkgs.niri;
-  
+  services.displayManager.sessionPackages = [ pkgs.niri ];
+
   environment.systemPackages = with pkgs; [
     gedit
   ];
@@ -37,9 +35,5 @@
   xdg.mime.enable = true;
   xdg.mime.defaultApplications = {
     "text/plain" = [ "org.gnome.gedit.desktop" ];
-  }; 
-
-  # Ensure niri session is available to display manager
-  services.displayManager.sessionPackages = [ pkgs.niri ];
+  };
 }
-

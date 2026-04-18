@@ -38,7 +38,6 @@
         "sudo"
         "extract"
         "colored-man-pages"
-        "command-not-found"
       ];
     };
 

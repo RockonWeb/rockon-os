@@ -13,6 +13,22 @@ in
     enable = mkEnableOption "Enable Nvidia Drivers";
   };
   config = mkIf cfg.enable {
+    # Wayland/Electron generic optimizations tailored perfectly for Pascal
+    environment.variables = {
+      GBM_BACKEND = "nvidia-drm";
+      __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+      LIBVA_DRIVER_NAME = "nvidia";
+      NVD_BACKEND = "direct";       
+      WLR_NO_HARDWARE_CURSORS = "1";
+    };
+
+    # VA-API driver directly loads video encoding off CPU logic to GTX GPU decoding
+    hardware.graphics = {
+      extraPackages = with pkgs; [
+        nvidia-vaapi-driver
+      ];
+    };
+
     services.xserver.videoDrivers = [ "nvidia" ];
     hardware.nvidia = {
       # Modesetting is required.
