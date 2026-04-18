@@ -1,45 +1,12 @@
-{ pkgs, lib, inputs, ... }:
+{ config, ... }:
 {
   imports = [
     ./hardware.nix
     ./host-packages.nix
+    ../shared/default.nix
     ./secure-boot.nix
   ];
-		
-  # Enable sddm display manager
-  services.displayManager.sddm.enable = true;
 
-  networking.nftables.enable = true;
-  services.v2raya.enable = true;  
-
-  services.udev.extraRules = ''
-    SUBSYSTEM=="hidraw", ATTRS{idVendor}=="342d", ATTRS{idProduct}=="e40f", TAG+="uaccess"
-    SUBSYSTEM=="usb", ATTRS{idVendor}=="342d", ATTRS{idProduct}=="e40f", TAG+="uaccess"
-    SUBSYSTEM=="hidraw", ATTRS{idVendor}=="2442", ATTRS{idProduct}=="b071", TAG+="uaccess"
-    SUBSYSTEM=="hidraw", ATTRS{idVendor}=="342d", ATTRS{idProduct}=="e410", TAG+="uaccess"
-    SUBSYSTEM=="usb", ATTRS{idVendor}=="342d", ATTRS{idProduct}=="e410", TAG+="uaccess"
-  '';
-
-
-
-  # Keep niri available at system level for ly display manager to detect it
-  programs.niri.package = pkgs.niri;
-  
-  environment.systemPackages = with pkgs; [
-    gedit
-  ];
-
-  environment.variables = {
-    EDITOR = "nano";
-    VISUAL = "gedit";
-  };
-
-  xdg.mime.enable = true;
-  xdg.mime.defaultApplications = {
-    "text/plain" = [ "org.gnome.gedit.desktop" ];
-  }; 
-
-  # Ensure niri session is available to display manager
-  services.displayManager.sessionPackages = [ pkgs.niri ];
+  # GTX 1070 (Pascal) requires the 580.xx legacy branch; 595.xx no longer supports it.
+  drivers.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
 }
-

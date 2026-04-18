@@ -53,8 +53,9 @@
     mesa # OpenGL support for VMs
   ];
 
-  # Enable necessary kernel modules for VM performance
-  boot.kernelModules = ["kvm-amd" "kvm-intel" "vfio-pci"];
+  # Keep only shared virtualization modules here; CPU-specific KVM modules
+  # belong in each host's hardware configuration.
+  boot.kernelModules = [ "vfio-pci" ];
 
   # Add boot kernel parameters for better graphics support
   boot.kernelParams = [

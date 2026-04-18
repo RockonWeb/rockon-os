@@ -43,8 +43,8 @@
   systemd.services.flatpak-repo = {
     wantedBy = [ "multi-user.target" ];
     path = [ pkgs.flatpak ];
-    after = [ "network-online.target" "v2raya.service" ];
-    wants = [ "network-online.target" "v2raya.service" ];
+    after = [ "network-online.target" ];
+    wants = [ "network-online.target" ];
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;

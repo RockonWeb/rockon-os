@@ -45,32 +45,39 @@
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [ "x86_64-linux" "aarch64-linux" ];
 
-      flake = {
-        nixosConfigurations =
-          let
-            mkHost = { hostname, profile, username }: nixpkgs.lib.nixosSystem {
-              system = "x86_64-linux"; # Using standard x86_64 system for all hosts
+      flake =
+        let
+          hostEntries = builtins.readDir ./hosts;
+          hostnames = nixpkgs.lib.filter (
+            name:
+            hostEntries.${name} == "directory"
+            && builtins.pathExists (./hosts + "/${name}/meta.nix")
+          ) (builtins.attrNames hostEntries);
+          mkHost =
+            hostname:
+            let
+              meta = import (./hosts + "/${hostname}/meta.nix");
+              system = meta.system or "x86_64-linux";
+            in
+            nixpkgs.lib.nixosSystem {
+              inherit system;
               specialArgs = {
                 inherit inputs;
                 host = hostname;
-                inherit profile;
-                inherit username;
-                zen-browser = inputs.zen-browser.packages."x86_64-linux".default;
-                helium-browser = inputs.helium-browser.packages."x86_64-linux".helium-browser;
+                profile = meta.profile;
+                username = meta.username;
+                zen-browser = inputs.zen-browser.packages.${system}.default;
+                helium-browser = inputs.helium-browser.packages.${system}.helium-browser;
               };
               modules = [
-                ./profiles/${profile}
+                ./profiles/${meta.profile}
                 inputs.nix-index-database.nixosModules.nix-index
               ];
             };
-          in
-          {
-            default = mkHost { hostname = "default"; profile = "nvidia"; username = "user"; };
-            rockon = mkHost { hostname = "rockon"; profile = "nvidia"; username = "rockon"; };
-            nix-tester = mkHost { hostname = "nix-tester"; profile = "intel"; username = "don"; };
-            nix-test = mkHost { hostname = "nix-test"; profile = "intel"; username = "don"; };
-          };
-      };
+        in
+        {
+          nixosConfigurations = nixpkgs.lib.genAttrs hostnames mkHost;
+        };
 
       perSystem = { system, pkgs, self', ... }:
         let
@@ -97,7 +104,5 @@
               formatting = treefmtEval.config.build.check inputs.self;
             };
         };
-
-
     };
 }

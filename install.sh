@@ -36,6 +36,36 @@ print_info() {
   echo -e "${BLUE}ℹ ${1}${NC}"
 }
 
+to_pci_bus_id() {
+  local raw="$1"
+
+  if [ -z "$raw" ]; then
+    return 1
+  fi
+
+  raw="${raw#0000:}"
+
+  local bus slot func
+  IFS=':.' read -r bus slot func <<< "$raw"
+
+  if [ -z "$bus" ] || [ -z "$slot" ] || [ -z "$func" ]; then
+    return 1
+  fi
+
+  printf 'PCI:%d:%d:%d\n' "0x$bus" "0x$slot" "0x$func"
+}
+
+detect_first_gpu_bus_id() {
+  local vendor_pattern="$1"
+  local raw
+
+  raw="$(lspci -Dnn | grep -iE 'vga|3d|display' | grep -iE "$vendor_pattern" | awk 'NR==1 { print $1 }')"
+
+  if [ -n "$raw" ]; then
+    to_pci_bus_id "$raw"
+  fi
+}
+
 # Welcome
 clear
 print_header "Rockon OS - Simplified Installation"
@@ -200,6 +230,23 @@ fi
 print_success "GPU Profile: $profile"
 echo ""
 
+intel_bus_id="$(detect_first_gpu_bus_id 'intel' || true)"
+nvidia_bus_id="$(detect_first_gpu_bus_id 'nvidia' || true)"
+
+intel_bus_id=${intel_bus_id:-PCI:0:2:0}
+nvidia_bus_id=${nvidia_bus_id:-PCI:1:0:0}
+
+if [ -n "$keyboard" ]; then
+  console_keymap="${keyboard%%,*}"
+  console_keymap="$(printf '%s' "$console_keymap" | xargs)"
+else
+  console_keymap="us"
+fi
+
+print_info "Detected Intel bus ID: $intel_bus_id"
+print_info "Detected Nvidia bus ID: $nvidia_bus_id"
+echo ""
+
 # Configuration summary
 print_header "Configuration Summary"
 echo -e "  Hostname:      ${GREEN}$hostname${NC}"
@@ -208,9 +255,9 @@ echo -e "  Timezone:      ${GREEN}$timezone${NC}"
 echo -e "  Keyboard:      ${GREEN}$keyboard${NC}"
 echo -e "  GPU Profile:   ${GREEN}$profile${NC}"
 echo ""
-echo -e "${BLUE}Default Settings (you can change these later):${NC}"
-echo -e "  Browser:       zen"
-echo -e "  Terminal:      kitty"
+echo -e "${BLUE}Shared Settings (inherited from hosts/shared):${NC}"
+echo -e "  Browser:       google-chrome"
+echo -e "  Terminal:      ghostty"
 echo -e "  Shell:         zsh"
 echo -e "  Bar:           noctalia"
 echo -e "  Window Mgrs:   Niri (default)"
@@ -232,70 +279,56 @@ echo ""
 print_header "Creating Host Configuration"
 mkdir -p "hosts/$hostname"
 
-# Copy default template
-cp hosts/default/*.nix "hosts/$hostname/" 2>/dev/null || true
-
 # Copy hardware config
 mv /tmp/hardware.nix "hosts/$hostname/hardware.nix"
 
+# Create host metadata
+cat > "hosts/$hostname/meta.nix" << EOF
+{
+  profile = "$profile";
+  username = "$username";
+}
+EOF
+
+# Create host default.nix
+cat > "hosts/$hostname/default.nix" << EOF
+{ ... }:
+{
+  imports = [
+    ./hardware.nix
+    ./host-packages.nix
+    ../shared/default.nix
+  ];
+}
+EOF
+
+# Create host-packages.nix
+cat > "hosts/$hostname/host-packages.nix" << EOF
+{ pkgs, ... }:
+{
+  environment.systemPackages = with pkgs; [
+    # Add machine-specific packages here when needed.
+  ];
+}
+EOF
+
 # Create variables.nix
 cat > "hosts/$hostname/variables.nix" << EOF
-{
-  # Git Configuration
+(import ../shared/variables.nix) // {
+  # Per-machine overrides for this host.
   gitUsername = "$username";
   gitEmail = "$username@$hostname";
-
-  # System Configuration
   timeZone = "$timezone";
-
-  # Monitor Settings (update after installation for your displays)
-  extraMonitorSettings = ''
-    monitor=,preferred,auto,1
-  '';
-
-  # Waybar Settings
-  clock24h = false;
-
-  # Default Applications
-  browser = "google-chrome";
-  terminal = "ghostty";
   keyboardLayout = "$keyboard";
-  consoleKeyMap = "$keyboard";
+  consoleKeyMap = "$console_keymap";
 
-  # For Nvidia Prime support (update if using nvidia-laptop profile)
-  # Run 'lspci | grep VGA' to find your actual GPU IDs
-  intelID = "PCI:0:2:0";
-  nvidiaID = "PCI:1:0:0";
+  # Leave monitor overrides empty to let Niri auto-detect the connected displays.
+  extraMonitorSettings = "";
+  dockMonitors = [ ];
 
-  # Core Features
-  enableNFS = false;
-  printEnable = false;
-  thunarEnable = true;
-  stylixEnable = true;
-
-  # Optional Features (disabled for faster initial install)
-  # You can enable these later by setting to true and rebuilding
-  gamingSupportEnable = false;       # Gaming controllers, gamescope, protonup-qt
-  flutterdevEnable = false;          # Flutter development environment
-  syncthingEnable = false;           # Syncthing file synchronization
-  enableCommunicationApps = false;   # Discord, Teams, Zoom, Telegram
-  enableExtraBrowsers = false;       # Vivaldi, Brave, Firefox, Chromium, Helium
-  enableProductivityApps = false;    # Obsidian, GNOME Boxes, QuickEmu
-  aiCodeEditorsEnable = false;       # Claude-code, gemini-cli, cursor
-
-
-
-  # Bar/Shell Choice
-  barChoice = "noctalia";      # Options: "dms" or "noctalia"
-  # NOTE: If you change barChoice to "dms", you must run 'dms-install' after rebuilding
-
-  # Shell Choice
-  defaultShell = "zsh";   # Options: "fish" or "zsh"
-
-  stylixImage = ../../wallpapers/clouds.jpg;
-
-  # Startup Applications
-  startupApps = [];
+  # Prime bus IDs are auto-detected once during install and can be adjusted later.
+  intelID = "$intel_bus_id";
+  nvidiaID = "$nvidia_bus_id";
 }
 EOF
 
@@ -328,20 +361,8 @@ cat > "modules/home/niri/hosts/$hostname/outputs.nix" << 'EOF'
 { host, ... }:
 ''
   // Host-specific output configuration for $HOSTNAME
-  // Configure your monitors here
-
-  output "eDP-1" {
-    mode "1920x1080@60.000"
-    scale 1.0
-    position x=0 y=0
-  }
-
-  // Add more outputs as needed
-  // output "HDMI-A-1" {
-  //   mode "2560x1440@144.000"
-  //   scale 1.0
-  //   position x=1920 y=0
-  // }
+  // Leave this file empty to let Niri auto-detect monitors on this machine.
+  // Add output blocks only if you want a fixed manual layout later.
 ''
 EOF
 
@@ -370,35 +391,9 @@ echo ""
 # Add new host files to git so flake can see them
 git add hosts/"$hostname"/ modules/home/niri/hosts/"$hostname"/ 2>/dev/null || true
 
-# Update flake.nix
-print_header "Updating Flake Configuration"
-
-if grep -q "\"$hostname\"" flake.nix; then
-  print_info "Host already exists in flake.nix"
-else
-  # Add host to flake.nix right after the default host
-  # Use awk to insert at the right location (after default host closing brace, before nixosConfigurations closing brace)
-  awk -v hostname="$hostname" -v profile="$profile" -v username="$username" '
-    /username = "user";/ { in_default = 1 }
-    in_default && /^        };$/ {
-      print
-      print ""
-      print "        " hostname " = mkHost {"
-      print "          hostname = \"" hostname "\";"
-      print "          profile = \"" profile "\";"
-      print "          username = \"" username "\";"
-      print "        };"
-      in_default = 0
-      next
-    }
-    { print }
-  ' flake.nix > flake.nix.tmp && mv flake.nix.tmp flake.nix
-
-  print_success "Added $hostname to flake.nix"
-
-  # Add updated flake.nix to git
-  git add flake.nix 2>/dev/null || true
-fi
+print_header "Registering Host"
+print_success "Host metadata created at hosts/$hostname/meta.nix"
+print_info "flake.nix now auto-discovers hosts, so no manual edit is needed"
 echo ""
 
 # Validate flake

@@ -21,7 +21,7 @@
     (import ./cliphist-picker.nix { inherit pkgs; })
     (import ./hm-find.nix { inherit pkgs; })
     (import ./zed-fix.nix { inherit pkgs; })
-    (import ./niri-gaming-mode.nix { inherit pkgs; })
+    (import ./niri-gaming-mode.nix { inherit pkgs host; })
     (import ./webapp-install.nix { inherit pkgs; })
     (import ./webapp-remove.nix { inherit pkgs; })
     (import ./dcli.nix {

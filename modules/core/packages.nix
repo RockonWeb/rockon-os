@@ -42,6 +42,7 @@
   environment.systemPackages = with pkgs; [
     # amfora # Fancy Terminal Browser For Gemini Protocol
     python3
+    hysteria
     antigravity
     ntfs3g
     corefonts

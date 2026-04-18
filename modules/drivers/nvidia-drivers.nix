@@ -1,6 +1,5 @@
 {
   lib,
-  pkgs,
   config,
   ...
 }:
@@ -11,24 +10,14 @@ in
 {
   options.drivers.nvidia = {
     enable = mkEnableOption "Enable Nvidia Drivers";
+    package = mkOption {
+      type = types.package;
+      default = config.boot.kernelPackages.nvidiaPackages.stable;
+      defaultText = literalExpression "config.boot.kernelPackages.nvidiaPackages.stable";
+      description = "The NVIDIA driver package to use for this system.";
+    };
   };
   config = mkIf cfg.enable {
-    # Wayland/Electron generic optimizations tailored perfectly for Pascal
-    environment.variables = {
-      GBM_BACKEND = "nvidia-drm";
-      __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-      LIBVA_DRIVER_NAME = "nvidia";
-      NVD_BACKEND = "direct";       
-      WLR_NO_HARDWARE_CURSORS = "1";
-    };
-
-    # VA-API driver directly loads video encoding off CPU logic to GTX GPU decoding
-    hardware.graphics = {
-      extraPackages = with pkgs; [
-        nvidia-vaapi-driver
-      ];
-    };
-
     services.xserver.videoDrivers = [ "nvidia" ];
     hardware.nvidia = {
       # Modesetting is required.
@@ -49,8 +38,8 @@ in
       # Enable the Nvidia settings menu,
       # accessible via `nvidia-settings`.
       nvidiaSettings = true;
-      # Optionally, you may need to select the appropriate driver version for your specific GPU.
-      package = config.boot.kernelPackages.nvidiaPackages.stable;
+      # Older GPUs can require a legacy branch instead of the default stable driver.
+      package = cfg.package;
     };
   };
 }

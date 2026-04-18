@@ -10,6 +10,7 @@ let
   variables = import ../../../hosts/${host}/variables.nix;
   barChoice = variables.barChoice or "waybar";
   terminal = variables.terminal or "ghostty";
+  dockMonitors = variables.dockMonitors or [ ];
   enableNoctalia = barChoice == "noctalia";
   projectRoot = "${config.home.homeDirectory}/rockon-os";
   brandIconPath = "${projectRoot}/modules/home/fastfetch/blackdontrans.png";
@@ -206,7 +207,7 @@ in
           colorizeIcons = true;
           displayMode = "exclusive";
           floatingRatio = 1;
-          monitors = [ "DP-1" ];
+          monitors = dockMonitors;
           onlySameOutput = true;
           pinnedApps = [ ];
           size = 1;

@@ -1,5 +1,6 @@
 # Tmux is a terminal multiplexer that allows you to run multiple terminal sessions in a single window.
-{pkgs, ...}: {
+{ pkgs, host, ... }:
+{
   programs.tmux = {
     enable = true;
     mouse = true;
@@ -102,7 +103,7 @@
         "Rockon flake.nix"         f  "display-popup -E 'nvim #{@rockon_project_root}/flake.nix'" \
         "Rockon packages"          p  "display-popup -E 'nvim #{@rockon_project_root}/modules/core/packages.nix'" \
         "Rockon keybinds"          k  "display-popup -E 'nvim #{@rockon_project_root}/modules/home/niri/keybinds.nix'" \
-        "Rockon variables"         e  "display-popup -E 'nvim #{@rockon_project_root}/hosts/rockon/variables.nix'" \
+        "Rockon variables"         e  "display-popup -E 'nvim #{@rockon_project_root}/hosts/${host}/variables.nix'" \
         "Rockon windowrules"       w  "display-popup -E 'nvim #{@rockon_project_root}/modules/home/niri/windowrules.nix'" \
         "Exit"              q  ""
 

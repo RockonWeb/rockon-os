@@ -25,17 +25,10 @@
       opacity 0.9
   }
 
-  // Launch vesktop and Telegram on DP-3 monitor
-  window-rule {
-      match app-id=r#"^(vesktop|org\.telegram\.desktop)$"#
-      open-on-output "DP-3"
-  }
-
-  // OBS always opens at full width on DP-2
+  // OBS opens at full width by default
   window-rule {
       match app-id=r#"^com\.obsproject\.Studio$"#
       default-column-width { proportion 1.0; }
-      open-on-output "DP-2"
   }
 
   // Zen Browser and Zed settings

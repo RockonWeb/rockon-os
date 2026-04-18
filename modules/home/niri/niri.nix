@@ -109,8 +109,6 @@ in
       PROTON_ENABLE_NVAPI "1"
       PROTON_HIDE_NVIDIA_GPU "0"
       PROTON_ENABLE_NGX_UPDATER "1"
-      WLR_NO_HARDWARE_CURSORS "1"
-      NVD_BACKEND "direct"
     }
 
     hotkey-overlay {
@@ -267,5 +265,6 @@ in
       source = ../../../wallpapers;
       recursive = true;
     };
+
   };
 }

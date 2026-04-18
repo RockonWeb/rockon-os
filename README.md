@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="image.png" alt="Rockon OS Desktop" width="900"/>
+  <img src="img/image.png" alt="Rockon OS Desktop" width="900"/>
 </p>
 
 <h1 align="center">⚡ Rockon OS</h1>
